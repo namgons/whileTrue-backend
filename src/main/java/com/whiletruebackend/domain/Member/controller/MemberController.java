@@ -16,6 +16,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // TODO: ACCESS TOKEN, REFRESH TOKEN 발급하기
     @GetMapping("/oauth/{accessCode}")
     public ResponseEntity<?> getAccessToken(@PathVariable String accessCode) {
         Long memberId = memberService.requestAccessToken(accessCode);
