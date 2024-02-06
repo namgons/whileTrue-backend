@@ -1,6 +1,7 @@
 package com.whiletruebackend.domain.Member.service;
 
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
+import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.Profile;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
@@ -67,6 +68,12 @@ public class MemberServiceImpl implements MemberService {
                                                                        notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
         member.getProfile().updateDatabase(notionDatabase);
+    }
+
+    @Override
+    public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
+        return MemberNotionSpaceResponseDto.from(member.getProfile());
+
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
