@@ -1,4 +1,4 @@
-package com.whiletruebackend.global.dto;
+package com.whiletruebackend.global.notion.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whiletruebackend.domain.Member.entity.Member;

@@ -1,5 +1,6 @@
 package com.whiletruebackend.domain.Member.entity;
 
+import com.whiletruebackend.global.notion.dto.NotionDatabase;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,10 +52,10 @@ public class Profile {
         this.workspaceName = workspaceName;
     }
 
-    public void updateDatabase(String databaseId, String databaseIcon, String databaseTitle) {
-        this.databaseId = databaseId;
-        this.databaseIcon = databaseIcon;
-        this.databaseTitle = databaseTitle;
+    public void updateDatabase(NotionDatabase notionDatabase) {
+        this.databaseId = notionDatabase.getId();
+        this.databaseIcon = notionDatabase.getIcon().getEmoji();
+        this.databaseTitle = notionDatabase.getTitle().get(0).getPlainText();
     }
 
 }

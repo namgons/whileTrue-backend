@@ -1,10 +1,12 @@
 package com.whiletruebackend.domain.Member.service;
 
+import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.Profile;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.ProfileRepository;
-import com.whiletruebackend.global.dto.NotionAccessToken;
+import com.whiletruebackend.global.notion.dto.NotionAccessToken;
+import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.utils.WebClientUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final ProfileRepository profileRepository;
+
+    private final NotionService notionService;
 
     @Value("${oauth.client_id}")
     private String OAUTH_CLIENT_ID;
@@ -54,6 +58,12 @@ public class MemberServiceImpl implements MemberService {
                 .block();
 
         return saveNotionAccessToken(notionAccessToken);
+    }
+
+    @Override
+    public void saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
+        notionService.retrieveDatabase(member.getNotionApiKey(), notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
