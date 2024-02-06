@@ -16,4 +16,14 @@ public class WebClientUtils {
                     httpHeaders.setBasicAuth(basicAuth);
                 }).build();
     }
+
+    public static WebClient createNotionClient(String url, String notionApiKey) {
+        return WebClient.builder()
+                .baseUrl(url)
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.setBearerAuth(notionApiKey);
+                    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+                    httpHeaders.set("Notion-Version", "2022-06-28");
+                }).build();
+    }
 }
