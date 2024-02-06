@@ -1,6 +1,8 @@
 package com.whiletruebackend.global.notion.service;
 
+import com.whiletruebackend.global.notion.dto.NotionDatabase;
+
 public interface NotionService {
 
-    void retrieveDatabase(String notionApiKey, String notionDatabaseId);
+    NotionDatabase retrieveDatabase(String notionApiKey, String notionDatabaseId);
 }

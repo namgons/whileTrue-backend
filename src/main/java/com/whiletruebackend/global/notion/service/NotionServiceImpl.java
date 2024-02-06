@@ -11,15 +11,15 @@ public class NotionServiceImpl implements NotionService {
     private final String NOTION_DATABASE_ENDPOINT = "https://api.notion.com/v1/databases";
 
     @Override
-    public void retrieveDatabase(String notionApiKey, String notionDatabaseId) {
+    public NotionDatabase retrieveDatabase(String notionApiKey, String notionDatabaseId) {
         String url = NOTION_DATABASE_ENDPOINT + "/" + notionDatabaseId;
-        WebClient notionClient = WebClientUtils.createNotionClient(notionDatabaseId, notionApiKey);
+        WebClient notionClient = WebClientUtils.createNotionClient(url, notionApiKey);
 
         NotionDatabase notionDatabase = notionClient.get()
                 .retrieve()
                 .bodyToMono(NotionDatabase.class)
                 .block();
-        
 
+        return notionDatabase;
     }
 }

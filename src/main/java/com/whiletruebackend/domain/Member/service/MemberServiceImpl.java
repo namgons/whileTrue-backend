@@ -6,6 +6,7 @@ import com.whiletruebackend.domain.Member.entity.Profile;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.ProfileRepository;
 import com.whiletruebackend.global.notion.dto.NotionAccessToken;
+import com.whiletruebackend.global.notion.dto.NotionDatabase;
 import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.utils.WebClientUtils;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,10 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        notionService.retrieveDatabase(member.getNotionApiKey(), notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+        NotionDatabase notionDatabase = notionService.retrieveDatabase(member.getNotionApiKey(),
+                                                                       notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
+        member.getProfile().updateDatabase(notionDatabase);
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
