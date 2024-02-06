@@ -1,6 +1,6 @@
-package com.whiletruebackend.domain.Auth.controller;
+package com.whiletruebackend.domain.Member.controller;
 
-import com.whiletruebackend.domain.Auth.service.AuthService;
+import com.whiletruebackend.domain.Member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class MemberController {
 
-    private final AuthService authService;
+    private final MemberService memberService;
 
     @GetMapping("/oauth/{accessCode}")
     public ResponseEntity<?> getAccessToken(@PathVariable String accessCode) {
-        authService.requestAccessToken(accessCode);
+        memberService.requestAccessToken(accessCode);
         return ResponseEntity.ok().build();
     }
 }

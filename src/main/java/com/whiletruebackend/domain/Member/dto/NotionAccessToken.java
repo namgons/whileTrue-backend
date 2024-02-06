@@ -1,4 +1,4 @@
-package com.whiletruebackend.domain.Auth.dto;
+package com.whiletruebackend.domain.Member.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

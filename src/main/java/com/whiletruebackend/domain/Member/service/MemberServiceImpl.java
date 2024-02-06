@@ -1,6 +1,6 @@
-package com.whiletruebackend.domain.Auth.service;
+package com.whiletruebackend.domain.Member.service;
 
-import com.whiletruebackend.domain.Auth.dto.NotionAccessToken;
+import com.whiletruebackend.domain.Member.dto.NotionAccessToken;
 import com.whiletruebackend.global.utils.WebClientUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Base64;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class MemberServiceImpl implements MemberService {
 
     @Value("${oauth.client_id}")
     private String OAUTH_CLIENT_ID;
