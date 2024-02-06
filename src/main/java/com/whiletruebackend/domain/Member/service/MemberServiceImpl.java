@@ -3,7 +3,7 @@ package com.whiletruebackend.domain.Member.service;
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
 import com.whiletruebackend.domain.Member.entity.Member;
-import com.whiletruebackend.domain.Member.entity.Profile;
+import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.ProfileRepository;
 import com.whiletruebackend.global.notion.dto.NotionAccessToken;
@@ -67,21 +67,21 @@ public class MemberServiceImpl implements MemberService {
         NotionDatabase notionDatabase = notionService.retrieveDatabase(member.getNotionApiKey(),
                                                                        notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
-        member.getProfile().updateDatabase(notionDatabase);
+        member.getNotionSpace().updateDatabase(notionDatabase);
     }
 
     @Override
     public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
-        return MemberNotionSpaceResponseDto.from(member.getProfile());
+        return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
 
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
-        Profile profile = notionAccessToken.toProfileEntity();
+        NotionSpace notionSpace = notionAccessToken.toNotionSpaceEntity();
         Member member = notionAccessToken.toMemberEntity();
-        member.updateProfile(profile);
+        member.updateNotionSpace(notionSpace);
 
-        profileRepository.save(profile);
+        profileRepository.save(notionSpace);
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
     }

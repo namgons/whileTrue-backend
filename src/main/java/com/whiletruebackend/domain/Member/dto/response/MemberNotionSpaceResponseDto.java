@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Member.dto.response;
 
-import com.whiletruebackend.domain.Member.entity.Profile;
+import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import lombok.*;
 
 @Getter
@@ -14,12 +14,12 @@ public class MemberNotionSpaceResponseDto {
     private String databaseIcon;
     private String databaseTitle;
 
-    public static MemberNotionSpaceResponseDto from(Profile profile) {
+    public static MemberNotionSpaceResponseDto from(NotionSpace notionSpace) {
         return MemberNotionSpaceResponseDto.builder()
-                .workspaceIcon(profile.getWorkspaceIcon())
-                .workspaceName(profile.getWorkspaceName())
-                .databaseIcon(profile.getDatabaseIcon())
-                .databaseTitle(profile.getDatabaseTitle())
+                .workspaceIcon(notionSpace.getWorkspaceIcon())
+                .workspaceName(notionSpace.getWorkspaceName())
+                .databaseIcon(notionSpace.getDatabaseIcon())
+                .databaseTitle(notionSpace.getDatabaseTitle())
                 .build();
     }
 }

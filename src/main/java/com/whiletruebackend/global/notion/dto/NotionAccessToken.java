@@ -2,7 +2,7 @@ package com.whiletruebackend.global.notion.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whiletruebackend.domain.Member.entity.Member;
-import com.whiletruebackend.domain.Member.entity.Profile;
+import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,19 +32,19 @@ public class NotionAccessToken {
         NotionUser user = this.owner.getUser();
         return Member.builder()
                 .userId(user.getId())
+                .userName(user.getName())
+                .avatarUrl(user.getAvatarUrl())
                 .notionApiKey(accessToken)
                 .tokenType(tokenType)
                 .build();
     }
 
-    public Profile toProfileEntity() {
-        NotionUser user = this.owner.getUser();
-        return Profile.builder()
-                .userName(user.getName())
-                .avatarUrl(user.getAvatarUrl())
+    public NotionSpace toNotionSpaceEntity() {
+        return NotionSpace.builder()
                 .workspaceId(workspaceId)
                 .workspaceIcon(workspaceIcon)
-                .workspaceName(workspaceName).build();
+                .workspaceName(workspaceName)
+                .build();
     }
 
 }

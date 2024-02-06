@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Profile {
+public class NotionSpace {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "profile_id")
+    @Column(name = "notion_space_id")
     private Long id;
-
-    private String userName;
-    private String avatarUrl;
 
     private String workspaceId;
     private String workspaceIcon;
@@ -28,13 +25,11 @@ public class Profile {
     private String databaseIcon;
     private String databaseTitle;
 
-    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "notionSpace", fetch = FetchType.LAZY)
     private Member member;
 
     @Builder
-    public Profile(String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {
-        this.userName = userName;
-        this.avatarUrl = avatarUrl;
+    public NotionSpace(String workspaceId, String workspaceIcon, String workspaceName) {
         this.workspaceId = workspaceId;
         this.workspaceIcon = workspaceIcon;
         this.workspaceName = workspaceName;
@@ -44,9 +39,7 @@ public class Profile {
         this.member = member;
     }
 
-    public void updateProfile(String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {
-        this.userName = userName;
-        this.avatarUrl = avatarUrl;
+    public void updateWorkspace(String workspaceId, String workspaceIcon, String workspaceName) {
         this.workspaceId = workspaceId;
         this.workspaceIcon = workspaceIcon;
         this.workspaceName = workspaceName;
