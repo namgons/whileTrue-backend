@@ -1,9 +1,14 @@
 package com.whiletruebackend.domain.Member.service;
 
-import com.whiletruebackend.domain.Member.dto.NotionAccessToken;
+import com.whiletruebackend.domain.Member.entity.Member;
+import com.whiletruebackend.domain.Member.repository.MemberRepository;
+import com.whiletruebackend.domain.Member.repository.ProfileRepository;
+import com.whiletruebackend.global.dto.NotionAccessToken;
 import com.whiletruebackend.global.utils.WebClientUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -12,7 +17,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.Base64;
 
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+    private final MemberRepository memberRepository;
+    private final ProfileRepository profileRepository;
 
     @Value("${oauth.client_id}")
     private String OAUTH_CLIENT_ID;
@@ -26,7 +35,8 @@ public class MemberServiceImpl implements MemberService {
     private final String NotionTokenEndPoint = "https://api.notion.com/v1/oauth/token";
 
     @Override
-    public void requestAccessToken(String accessCode) {
+    @Transactional
+    public Long requestAccessToken(String accessCode) {
 
         String encoded = Base64.getEncoder().encodeToString(String.format("%s:%s", OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET).getBytes());
         WebClient webClient = WebClientUtils.createTokenRequestWebClient(NotionTokenEndPoint, encoded);
@@ -42,7 +52,12 @@ public class MemberServiceImpl implements MemberService {
                 .bodyToMono(NotionAccessToken.class)
                 .block();
 
-        System.out.println(notionAccessToken);
+        return saveNotionAccessToken(notionAccessToken);
+    }
 
+    private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
+        profileRepository.save(notionAccessToken.toProfileEntity());
+        Member member = memberRepository.save(notionAccessToken.toMemberEntity());
+        return member.getId();
     }
 }

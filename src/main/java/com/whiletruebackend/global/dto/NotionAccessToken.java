@@ -1,6 +1,8 @@
-package com.whiletruebackend.domain.Member.dto;
+package com.whiletruebackend.global.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.whiletruebackend.domain.Member.entity.Member;
+import com.whiletruebackend.domain.Member.entity.Profile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +27,24 @@ public class NotionAccessToken {
     private String duplicatedTemplateId;
     @JsonProperty("request_id")
     private String requestId;
+
+    public Member toMemberEntity() {
+        return Member.builder()
+                .notionApiKey(accessToken)
+                .tokenType(tokenType)
+                .build();
+    }
+
+    public Profile toProfileEntity() {
+        NotionUser user = this.owner.getUser();
+        return Profile.builder()
+                .userId(user.getId())
+                .userName(user.getName())
+                .avatarUrl(user.getAvatarUrl())
+                .workspaceId(workspaceId)
+                .workspaceIcon(workspaceIcon)
+                .workspaceName(workspaceName).build();
+    }
 
 }
 

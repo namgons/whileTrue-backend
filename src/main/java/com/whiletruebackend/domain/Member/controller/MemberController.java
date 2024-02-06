@@ -15,7 +15,7 @@ public class MemberController {
 
     @GetMapping("/oauth/{accessCode}")
     public ResponseEntity<?> getAccessToken(@PathVariable String accessCode) {
-        memberService.requestAccessToken(accessCode);
+        Long memberId = memberService.requestAccessToken(accessCode);
         return ResponseEntity.ok().build();
     }
 }
