@@ -8,7 +8,7 @@ public interface MemberService {
 
     Long requestAccessToken(String accessCode);
 
-    void saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto);
+    MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto);
 
     MemberNotionSpaceResponseDto getMemberNotionSpace(Member member);
 }

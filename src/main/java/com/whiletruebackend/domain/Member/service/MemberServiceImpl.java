@@ -5,7 +5,7 @@ import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponse
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
-import com.whiletruebackend.domain.Member.repository.ProfileRepository;
+import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
 import com.whiletruebackend.global.notion.dto.NotionAccessToken;
 import com.whiletruebackend.global.notion.dto.NotionDatabase;
 import com.whiletruebackend.global.notion.service.NotionService;
@@ -26,7 +26,7 @@ import java.util.Base64;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final ProfileRepository profileRepository;
+    private final NotionSpaceRepository notionSpaceRepository;
 
     private final NotionService notionService;
 
@@ -63,11 +63,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
+    public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
+                                                               NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
         NotionDatabase notionDatabase = notionService.retrieveDatabase(member.getNotionApiKey(),
                                                                        notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
-        member.getNotionSpace().updateDatabase(notionDatabase);
+        NotionSpace notionSpace = member.getNotionSpace();
+        notionSpace.updateDatabase(notionDatabase);
+        NotionSpace savedNotionSpace = notionSpaceRepository.save(notionSpace);
+        return MemberNotionSpaceResponseDto.from(savedNotionSpace);
     }
 
     @Override
@@ -80,7 +84,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = notionAccessToken.toMemberEntity();
         member.updateNotionSpace(notionSpace);
 
-        profileRepository.save(notionSpace);
+        notionSpaceRepository.save(notionSpace);
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
     }

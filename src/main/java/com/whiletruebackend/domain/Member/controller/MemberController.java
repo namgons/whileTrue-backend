@@ -29,17 +29,18 @@ public class MemberController {
     @GetMapping("/notion-space")
     public ResponseEntity<ResponseWrapper<MemberNotionSpaceResponseDto>> getMemberNotionInformation(
             @AuthenticationPrincipal Member member) {
-        MemberNotionSpaceResponseDto memberNotionSpaceDto = memberService.getMemberNotionSpace(member);
-        return JsonResponse.ok("사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceDto);
+        MemberNotionSpaceResponseDto memberNotionSpaceResponseDto = memberService.getMemberNotionSpace(member);
+        return JsonResponse.ok("사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceResponseDto);
     }
 
     @PostMapping("/notion-database-id")
-    public ResponseEntity<ResponseWrapper<Nullable>> getNotionDatabaseId(
+    public ResponseEntity<ResponseWrapper<MemberNotionSpaceResponseDto>> getNotionDatabaseId(
             @AuthenticationPrincipal Member member,
             @RequestBody NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto
     ) {
-        memberService.saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto);
-        return ResponseEntity.ok().build();
+        MemberNotionSpaceResponseDto memberNotionSpaceResponseDto = memberService.saveNotionDatabaseInfo(member,
+                                                                                                         notionDatabaseIdUpdateRequestDto);
+        return JsonResponse.ok("데이터베이스 정보를 저장했습니다. 사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceResponseDto);
     }
 
 }
