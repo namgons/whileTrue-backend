@@ -16,18 +16,22 @@ public class Member {
     @Column(name = "member_id")
     public Long id;
 
+    public String userId;
     public String notionApiKey;
-
     private String tokenType;
 
     private String accessToken;
-
     private String refreshToken;
 
     @Builder
-    public Member(String notionApiKey, String tokenType) {
+    public Member(String userId, String notionApiKey, String tokenType) {
+        this.userId = userId;
         this.notionApiKey = notionApiKey;
         this.tokenType = tokenType;
+    }
+
+    public void updateNotionApiKey(String notionApiKey) {
+        this.notionApiKey = notionApiKey;
     }
 
     public void updateAccessToken(String accessToken) {

@@ -16,7 +16,6 @@ public class Profile {
     @Column(name = "profile_id")
     private Long id;
 
-    private String userId;
     private String userName;
     private String avatarUrl;
 
@@ -29,8 +28,7 @@ public class Profile {
     private String databaseTitle;
 
     @Builder
-    public Profile(String userId, String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {
-        this.userId = userId;
+    public Profile(String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {
         this.userName = userName;
         this.avatarUrl = avatarUrl;
         this.workspaceId = workspaceId;

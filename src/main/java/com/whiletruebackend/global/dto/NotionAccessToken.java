@@ -29,7 +29,9 @@ public class NotionAccessToken {
     private String requestId;
 
     public Member toMemberEntity() {
+        NotionUser user = this.owner.getUser();
         return Member.builder()
+                .userId(user.getId())
                 .notionApiKey(accessToken)
                 .tokenType(tokenType)
                 .build();
@@ -38,7 +40,6 @@ public class NotionAccessToken {
     public Profile toProfileEntity() {
         NotionUser user = this.owner.getUser();
         return Profile.builder()
-                .userId(user.getId())
                 .userName(user.getName())
                 .avatarUrl(user.getAvatarUrl())
                 .workspaceId(workspaceId)
