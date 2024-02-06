@@ -1,4 +1,7 @@
 package com.whiletruebackend.domain.Notion.service;
 
-public class NotionServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class NotionServiceImpl implements NotionService {
 }
