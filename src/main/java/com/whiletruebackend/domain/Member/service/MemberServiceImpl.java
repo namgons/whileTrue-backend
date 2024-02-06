@@ -1,6 +1,7 @@
 package com.whiletruebackend.domain.Member.service;
 
 import com.whiletruebackend.domain.Member.entity.Member;
+import com.whiletruebackend.domain.Member.entity.Profile;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.ProfileRepository;
 import com.whiletruebackend.global.dto.NotionAccessToken;
@@ -56,8 +57,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
-        profileRepository.save(notionAccessToken.toProfileEntity());
-        Member member = memberRepository.save(notionAccessToken.toMemberEntity());
-        return member.getId();
+        Profile profile = notionAccessToken.toProfileEntity();
+        Member member = notionAccessToken.toMemberEntity();
+        member.updateProfile(profile);
+
+        profileRepository.save(profile);
+        Member savedMember = memberRepository.save(member);
+        return savedMember.getId();
     }
 }

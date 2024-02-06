@@ -27,6 +27,9 @@ public class Profile {
     private String databaseIcon;
     private String databaseTitle;
 
+    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
+    private Member member;
+
     @Builder
     public Profile(String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {
         this.userName = userName;
@@ -34,6 +37,10 @@ public class Profile {
         this.workspaceId = workspaceId;
         this.workspaceIcon = workspaceIcon;
         this.workspaceName = workspaceName;
+    }
+
+    public void updateMember(Member member) {
+        this.member = member;
     }
 
     public void updateProfile(String userName, String avatarUrl, String workspaceId, String workspaceIcon, String workspaceName) {

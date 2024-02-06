@@ -23,11 +23,20 @@ public class Member {
     private String accessToken;
     private String refreshToken;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
     @Builder
     public Member(String userId, String notionApiKey, String tokenType) {
         this.userId = userId;
         this.notionApiKey = notionApiKey;
         this.tokenType = tokenType;
+    }
+
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
+        profile.updateMember(this);
     }
 
     public void updateNotionApiKey(String notionApiKey) {
