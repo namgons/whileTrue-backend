@@ -73,7 +73,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
-
     }
 
     private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {

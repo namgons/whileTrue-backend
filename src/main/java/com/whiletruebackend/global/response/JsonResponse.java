@@ -1,8 +1,8 @@
 package com.whiletruebackend.global.response;
 
-import jakarta.annotation.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 
 public class JsonResponse {
 
