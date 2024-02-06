@@ -1,5 +1,6 @@
 package com.whiletruebackend.domain.Auth.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,15 +8,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NotionAccessToken {
 
-    private String access_token;
-    private String token_type;
-    private String bot_id;
-    private String workspace_name;
-    private String workspace_icon;
-    private String workspace_id;
+    @JsonProperty("access_token")
+    private String accessToken;
+    @JsonProperty("token_type")
+    private String tokenType;
+    @JsonProperty("bot_id")
+    private String botId;
+    @JsonProperty("workspace_name")
+    private String workspaceName;
+    @JsonProperty("workspace_icon")
+    private String workspaceIcon;
+    @JsonProperty("workspace_id")
+    private String workspaceId;
     private NotionOwner owner;
-    private String duplicated_template_id;
-    private String request_id;
+    @JsonProperty("duplicated_template_id")
+    private String duplicatedTemplateId;
+    @JsonProperty("request_id")
+    private String requestId;
 
 }
 
@@ -35,7 +44,8 @@ class NotionUser {
     private String object;
     private String id;
     private String name;
-    private String avatar_url;
+    @JsonProperty("avatar_url")
+    private String avatarUrl;
     private String type;
 
 }
