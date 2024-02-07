@@ -18,8 +18,14 @@ public class NotionPropertyType {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class SelectItem {
+        private String name;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Number  {
-        private Double number;
+        private String number;
     }
 
     @Getter
@@ -46,10 +52,4 @@ public class NotionPropertyType {
     public static class Icon {
         private String emoji;
     }
-}
-
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-class SelectItem {
-    private String name;
 }

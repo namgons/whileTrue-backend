@@ -1,14 +1,14 @@
 package com.whiletruebackend.domain.Problem.vo;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Problem {
 
-    private ProblemSiteType problemType;
+    private String problemSiteType;
     private String problemNumber;
     private String problemTitle;
     private String url;

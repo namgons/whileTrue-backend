@@ -19,27 +19,26 @@ public class RetrieveDatabaseResponseDto {
     private Boolean archived;
     @JsonProperty("public_url")
     private String publicUrl;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class NotionDatabaseProperties {
+        @JsonProperty(RequiredColumn.PROBLEM_SITE)
+        private ColumnProperty problemSite;
+        @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
+        private ColumnProperty problemNumber;
+        @JsonProperty(RequiredColumn.PROBLEM_TITLE)
+        private ColumnProperty problemTitle;
+        @JsonProperty(RequiredColumn.PROBLEM_URL)
+        private ColumnProperty problemUrl;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class ColumnProperty {
+        private String id;
+        private String name;
+        private String type;
+    }
 }
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-class NotionDatabaseProperties {
-
-    @JsonProperty(RequiredColumn.PROBLEM_SITE)
-    private ColumnProperty problemSite;
-    @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
-    private ColumnProperty problemNumber;
-    @JsonProperty(RequiredColumn.PROBLEM_TITLE)
-    private ColumnProperty problemTitle;
-    @JsonProperty(RequiredColumn.PROBLEM_URL)
-    private ColumnProperty problemUrl;
-}
-
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-class ColumnProperty {
-
-    private String id;
-    private String name;
-    private String type;
-}
