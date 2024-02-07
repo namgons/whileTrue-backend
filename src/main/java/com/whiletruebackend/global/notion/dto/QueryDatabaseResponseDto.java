@@ -28,12 +28,12 @@ class NotionPage {
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 class NotionPageProperty {
 
-    @JsonProperty("Problem Site")
+    @JsonProperty(RequiredColumn.PROBLEM_SITE)
     private NotionPropertyType.Select problemSite;
-    @JsonProperty("Problem Number")
+    @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
     private NotionPropertyType.Number problemNumber;
-    @JsonProperty("Problem Title")
+    @JsonProperty(RequiredColumn.PROBLEM_TITLE)
     private NotionPropertyType.Title problemTitle;
-    @JsonProperty("URL")
+    @JsonProperty(RequiredColumn.PROBLEM_URL)
     private NotionPropertyType.Url problemUrl;
 }

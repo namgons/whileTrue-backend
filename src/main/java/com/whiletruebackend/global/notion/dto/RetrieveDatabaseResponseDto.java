@@ -25,13 +25,13 @@ public class RetrieveDatabaseResponseDto {
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 class NotionDatabaseProperties {
 
-    @JsonProperty("Problem Site")
+    @JsonProperty(RequiredColumn.PROBLEM_SITE)
     private ColumnProperty problemSite;
-    @JsonProperty("Problem Number")
+    @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
     private ColumnProperty problemNumber;
-    @JsonProperty("Problem Title")
+    @JsonProperty(RequiredColumn.PROBLEM_TITLE)
     private ColumnProperty problemTitle;
-    @JsonProperty("URL")
+    @JsonProperty(RequiredColumn.PROBLEM_URL)
     private ColumnProperty problemUrl;
 }
 
