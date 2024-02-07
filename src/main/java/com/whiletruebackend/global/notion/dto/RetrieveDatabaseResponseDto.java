@@ -9,33 +9,35 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NotionDatabase {
+public class RetrieveDatabaseResponseDto {
 
-    private String object;
     private String id;
-    private NotionIcon icon;
+    private NotionPropertyType.Icon icon;
     private String url;
-    private List<NotionTitle> title;
-    private NotionDBProperties properties;
+    private List<NotionPropertyType.Text> title;
+    private NotionDatabaseProperties properties;
+    private Boolean archived;
+    @JsonProperty("public_url")
+    private String publicUrl;
 }
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class NotionDBProperties {
+class NotionDatabaseProperties {
 
+    @JsonProperty("Problem Site")
+    private ColumnProperty problemSite;
     @JsonProperty("Problem Number")
-    private Property problemNumber;
+    private ColumnProperty problemNumber;
     @JsonProperty("Problem Title")
-    private Property problemTitle;
+    private ColumnProperty problemTitle;
     @JsonProperty("URL")
-    private Property problemUrl;
-    @JsonProperty("생성 날짜")
-    private Property createdAt;
+    private ColumnProperty problemUrl;
 }
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-class Property {
+class ColumnProperty {
 
     private String id;
     private String name;

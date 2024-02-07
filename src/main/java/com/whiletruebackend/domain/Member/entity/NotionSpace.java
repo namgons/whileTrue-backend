@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Member.entity;
 
-import com.whiletruebackend.global.notion.dto.NotionDatabase;
+import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -45,10 +45,10 @@ public class NotionSpace {
         this.workspaceName = workspaceName;
     }
 
-    public void updateDatabase(NotionDatabase notionDatabase) {
-        this.databaseId = notionDatabase.getId();
-        this.databaseIcon = notionDatabase.getIcon().getEmoji();
-        this.databaseTitle = notionDatabase.getTitle().get(0).getPlainText();
+    public void updateDatabase(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
+        this.databaseId = retrieveDatabaseResponseDto.getId();
+        this.databaseIcon = retrieveDatabaseResponseDto.getIcon().getEmoji();
+        this.databaseTitle = retrieveDatabaseResponseDto.getTitle().get(0).getPlainText();
     }
 
 }

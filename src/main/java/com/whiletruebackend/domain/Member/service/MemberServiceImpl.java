@@ -6,8 +6,8 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
-import com.whiletruebackend.global.notion.dto.NotionAccessToken;
-import com.whiletruebackend.global.notion.dto.NotionDatabase;
+import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
+import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.utils.WebClientUtils;
 import lombok.RequiredArgsConstructor;
@@ -65,11 +65,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        NotionDatabase notionDatabase = notionService.retrieveDatabase(member.getNotionApiKey(),
-                                                                       notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.retrieveDatabase(member.getNotionApiKey(),
+                                                                     notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
         NotionSpace notionSpace = member.getNotionSpace();
-        notionSpace.updateDatabase(notionDatabase);
+        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
         NotionSpace savedNotionSpace = notionSpaceRepository.save(notionSpace);
         return MemberNotionSpaceResponseDto.from(savedNotionSpace);
     }

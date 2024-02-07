@@ -1,4 +1,4 @@
-package com.whiletruebackend.global.notion.dto;
+package com.whiletruebackend.global.notion.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whiletruebackend.domain.Member.entity.Member;
@@ -46,7 +46,6 @@ public class NotionAccessToken {
                 .workspaceName(workspaceName)
                 .build();
     }
-
 }
 
 @Getter
@@ -55,7 +54,6 @@ class NotionOwner {
 
     private String type;
     private NotionUser user;
-
 }
 
 @Getter
@@ -68,5 +66,4 @@ class NotionUser {
     @JsonProperty("avatar_url")
     private String avatarUrl;
     private String type;
-
 }
