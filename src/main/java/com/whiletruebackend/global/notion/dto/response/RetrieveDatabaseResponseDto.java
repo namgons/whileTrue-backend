@@ -1,4 +1,4 @@
-package com.whiletruebackend.global.notion.dto;
+package com.whiletruebackend.global.notion.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -23,6 +23,7 @@ public class RetrieveDatabaseResponseDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class NotionDatabaseProperties {
+
         @JsonProperty(RequiredColumn.PROBLEM_SITE)
         private ColumnProperty problemSite;
         @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
@@ -36,6 +37,7 @@ public class RetrieveDatabaseResponseDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class ColumnProperty {
+
         private String id;
         private String name;
         private String type;

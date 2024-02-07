@@ -10,4 +10,6 @@ public interface ProblemService {
     ProblemListResponseDto getProblemList(Member member);
 
     ProblemExistenceResponseDto checkIfProblemExits(Member member, ProblemRequestDto problemRequestDto);
+
+    void insertNewProblem(Member member, ProblemRequestDto problemRequestDto);
 }

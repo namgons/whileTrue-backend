@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Member.entity;
 
-import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -6,20 +6,12 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
-import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
-import com.whiletruebackend.global.notion.vo.NotionAccessToken;
+import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
-import com.whiletruebackend.global.utils.WebClientUtils;
+import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
         RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.retrieveDatabase(member.getNotionApiKey(),
-                                                                     notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+                                                                                                 notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
         NotionSpace notionSpace = member.getNotionSpace();
         notionSpace.updateDatabase(retrieveDatabaseResponseDto);

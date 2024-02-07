@@ -1,4 +1,4 @@
-package com.whiletruebackend.global.notion.dto;
+package com.whiletruebackend.global.notion.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

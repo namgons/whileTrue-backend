@@ -25,8 +25,14 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public ProblemExistenceResponseDto checkIfProblemExits(Member member, ProblemRequestDto problemRequestDto) {
-        boolean isExists = notionService.isProblemExists(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId(), problemRequestDto.getProblem());
+        boolean isExists = notionService.isProblemExists(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId(),
+                                                         problemRequestDto.getProblem());
 
         return null;
+    }
+
+    @Override
+    public void insertNewProblem(Member member, ProblemRequestDto problemRequestDto) {
+        notionService.insertNewProblem(member.getNotionApiKey(), member.getNotionApiKey(), problemRequestDto.getProblem());
     }
 }

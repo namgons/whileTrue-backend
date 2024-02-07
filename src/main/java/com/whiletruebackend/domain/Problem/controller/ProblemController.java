@@ -25,6 +25,16 @@ public class ProblemController {
         return JsonResponse.ok("문제 리스트를 가져왔습니다.", responseDto);
     }
 
+    @PostMapping
+    public ResponseEntity<?> insertNewProblem(
+            @AuthenticationPrincipal Member member,
+            @RequestBody ProblemRequestDto problemRequestDto
+    ) {
+        problemService.insertNewProblem(member, problemRequestDto);
+        return JsonResponse.ok("새로운 문제를 저장했습니다.");
+    }
+
+
     @PostMapping("/check")
     public ResponseEntity<ResponseWrapper<ProblemExistenceResponseDto>> checkIfProblemExits(
             @AuthenticationPrincipal Member member,

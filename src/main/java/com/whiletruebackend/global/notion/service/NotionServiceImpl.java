@@ -1,9 +1,10 @@
 package com.whiletruebackend.global.notion.service;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
-import com.whiletruebackend.global.notion.dto.QueryDatabaseResponseDto;
-import com.whiletruebackend.global.notion.dto.RequiredColumn;
-import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.request.CreatePageRequestDto;
+import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.response.RequiredColumn;
+import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import com.whiletruebackend.global.utils.ObjectMapperUtils;
 import com.whiletruebackend.global.utils.WebClientUtils;
@@ -16,7 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.*;
 
-import static com.whiletruebackend.global.notion.dto.QueryDatabaseResponseDto.*;
+import static com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto.NotionPageProperty;
 
 @Service
 public class NotionServiceImpl implements NotionService {
@@ -32,6 +33,7 @@ public class NotionServiceImpl implements NotionService {
 
     private final String NOTION_TOKEN_ENDPOINT = "https://api.notion.com/v1/oauth/token";
     private final String NOTION_DATABASE_ENDPOINT = "https://api.notion.com/v1/databases";
+    private final String NOTION_PAGE_ENDPOINT = "https://api.notion.com/v1/pages";
 
     public NotionAccessToken requestNotionToken(String accessCode) {
         String encoded = Base64.getEncoder().encodeToString(String.format("%s:%s", OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET).getBytes());
@@ -121,5 +123,17 @@ public class NotionServiceImpl implements NotionService {
                 .block();
 
         return response.getResults().size() != 0;
+    }
+
+    @Override
+    public void insertNewProblem(String notionApiKey, String databaseId, Problem problem) {
+        WebClient notionClient = WebClientUtils.createNotionClient(NOTION_PAGE_ENDPOINT, notionApiKey);
+
+        CreatePageRequestDto body = CreatePageRequestDto.from(databaseId, problem);
+        notionClient.post()
+                .bodyValue(body)
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
     }
 }
