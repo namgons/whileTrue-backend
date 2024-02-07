@@ -28,7 +28,7 @@ public class ProblemServiceImpl implements ProblemService {
         boolean isExists = notionService.isProblemExists(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId(),
                                                          problemRequestDto.getProblem());
 
-        return null;
+        return ProblemExistenceResponseDto.from(isExists);
     }
 
     @Override
