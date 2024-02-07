@@ -27,38 +27,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final NotionSpaceRepository notionSpaceRepository;
-
     private final NotionService notionService;
-
-    @Value("${oauth.client_id}")
-    private String OAUTH_CLIENT_ID;
-
-    @Value("${oauth.client_secret}")
-    private String OAUTH_CLIENT_SECRET;
-
-    @Value("${oauth.redirect_uri}")
-    private String REDIRECT_URI;
-
-    private final String NotionTokenEndPoint = "https://api.notion.com/v1/oauth/token";
 
     @Override
     @Transactional
     public Long requestAccessToken(String accessCode) {
-
-        String encoded = Base64.getEncoder().encodeToString(String.format("%s:%s", OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET).getBytes());
-        WebClient webClient = WebClientUtils.createTokenRequestWebClient(NotionTokenEndPoint, encoded);
-
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("grant_type", "authorization_code");
-        formData.add("code", accessCode);
-        formData.add("redirect_uri", REDIRECT_URI);
-
-        NotionAccessToken notionAccessToken = webClient.post()
-                .body(BodyInserters.fromFormData(formData))
-                .retrieve()
-                .bodyToMono(NotionAccessToken.class)
-                .block();
-
+        NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
         return saveNotionAccessToken(notionAccessToken);
     }
 
