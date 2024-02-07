@@ -95,4 +95,31 @@ public class NotionServiceImpl implements NotionService {
 
         return results;
     }
+
+    @Override
+    public boolean isProblemExists(String notionApiKey, String databaseId, Problem problem) {
+        String url = String.format("%s/%s/query", NOTION_DATABASE_ENDPOINT, databaseId);
+        WebClient notionClient = WebClientUtils.createNotionClient(url, notionApiKey);
+
+        Map<String, Object> formData = new HashMap<>();
+        List<Map<String, Object>> filterList = new ArrayList<>();
+        filterList.add(Map.of(
+                "property", RequiredColumn.PROBLEM_SITE,
+                "select", Map.of("equals", problem.getProblemSiteType())
+        ));
+        filterList.add(Map.of(
+                "property", RequiredColumn.PROBLEM_NUMBER,
+                "number", Map.of("equals", problem.getProblemNumber())
+        ));
+        formData.put("and", filterList);
+        String json = ObjectMapperUtils.mapToString(formData);
+
+        QueryDatabaseResponseDto response = notionClient.post()
+                .bodyValue(json)
+                .retrieve()
+                .bodyToMono(QueryDatabaseResponseDto.class)
+                .block();
+
+        return response.getResults().size() != 0;
+    }
 }

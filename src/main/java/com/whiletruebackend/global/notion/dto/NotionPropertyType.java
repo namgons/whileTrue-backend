@@ -45,6 +45,7 @@ public class NotionPropertyType {
     public static class Text {
         @JsonProperty("plain_text")
         private String plainText;
+
     }
 
     @Getter

@@ -11,4 +11,5 @@ public interface NotionService {
     NotionAccessToken requestNotionToken(String accessCode);
     RetrieveDatabaseResponseDto retrieveDatabase(String notionApiKey, String notionDatabaseId);
     List<Problem> getProblemList(String notionApiKey, String notionDatabaseId);
+    boolean isProblemExists(String notionApiKey, String databaseId, Problem problem);
 }
