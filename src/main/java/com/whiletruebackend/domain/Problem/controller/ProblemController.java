@@ -28,8 +28,7 @@ public class ProblemController {
     @PostMapping
     public ResponseEntity<?> insertNewProblem(
             @AuthenticationPrincipal Member member,
-            @RequestBody ProblemRequestDto problemRequestDto
-    ) {
+            @RequestBody ProblemRequestDto problemRequestDto) {
         problemService.insertNewProblem(member, problemRequestDto);
         return JsonResponse.ok("새로운 문제를 저장했습니다.");
     }
@@ -38,8 +37,7 @@ public class ProblemController {
     @PostMapping("/check")
     public ResponseEntity<ResponseWrapper<ProblemExistenceResponseDto>> checkIfProblemExits(
             @AuthenticationPrincipal Member member,
-            @RequestBody ProblemRequestDto problemRequestDto
-    ) {
+            @RequestBody ProblemRequestDto problemRequestDto) {
         ProblemExistenceResponseDto problemExistenceResponseDto = problemService.checkIfProblemExits(member, problemRequestDto);
         return JsonResponse.ok("현재 문제가 이미 존재하는지 확인했습니다.", problemExistenceResponseDto);
     }

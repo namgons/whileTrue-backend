@@ -36,10 +36,9 @@ public class MemberController {
     @PostMapping("/notion-database-id")
     public ResponseEntity<ResponseWrapper<MemberNotionSpaceResponseDto>> getNotionDatabaseId(
             @AuthenticationPrincipal Member member,
-            @RequestBody NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto
-    ) {
-        MemberNotionSpaceResponseDto memberNotionSpaceResponseDto = memberService.saveNotionDatabaseInfo(member,
-                                                                                                         notionDatabaseIdUpdateRequestDto);
+            @RequestBody NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
+        MemberNotionSpaceResponseDto memberNotionSpaceResponseDto =
+                memberService.saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto);
         return JsonResponse.ok("데이터베이스 정보를 저장했습니다. 사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceResponseDto);
     }
 

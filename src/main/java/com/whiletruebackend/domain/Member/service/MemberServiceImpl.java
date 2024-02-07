@@ -31,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.retrieveDatabase(member.getNotionApiKey(),
-                                                                                                 notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
+                notionService.retrieveDatabase(member.getNotionApiKey(), notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
 
         NotionSpace notionSpace = member.getNotionSpace();
         notionSpace.updateDatabase(retrieveDatabaseResponseDto);
