@@ -2,6 +2,7 @@ package com.whiletruebackend.global.notion.service;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
 import com.whiletruebackend.global.notion.dto.QueryDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import com.whiletruebackend.global.utils.ObjectMapperUtils;
@@ -67,7 +68,7 @@ public class NotionServiceImpl implements NotionService {
         Map<String, Object> formData = new HashMap<>();
         List<Map<String, String>> sortList = new ArrayList<>();
         sortList.add(Map.of(
-                "property", "Random Number",
+                "property", RequiredColumn.RANDOM_NUMBER,
                 "direction", "ascending"
         ));
         formData.put("sort", sortList);
