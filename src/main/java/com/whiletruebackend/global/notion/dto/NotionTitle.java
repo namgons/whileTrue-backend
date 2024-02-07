@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NotionDatabaseTitle {
+public class NotionTitle {
 
     @JsonProperty("plain_text")
     private String plainText;

@@ -15,7 +15,7 @@ public class NotionDatabase {
     private String id;
     private NotionIcon icon;
     private String url;
-    private List<NotionDatabaseTitle> title;
+    private List<NotionTitle> title;
     private NotionDBProperties properties;
 }
 
