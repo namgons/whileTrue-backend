@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -37,10 +40,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        NotionSpace notionSpace = saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+        String databaseUrl = notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl();
+        String databaseId = parseDatabaseId(databaseUrl);
+        NotionSpace notionSpace = saveNotionDatabaseInfo(member, databaseId);
         return MemberNotionSpaceResponseDto.from(notionSpace);
     }
-    
+
     @Override
     public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
@@ -62,5 +67,17 @@ public class MemberServiceImpl implements MemberService {
         NotionSpace notionSpace = member.getNotionSpace();
         notionSpace.updateDatabase(retrieveDatabaseResponseDto);
         return notionSpaceRepository.save(notionSpace);
+    }
+
+    private String parseDatabaseId(String databaseUrl) {
+        String pattern = "https:\\/\\/www\\.notion\\.so\\/(.+?)\\/(.+?)\\?v=(.+)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(databaseUrl);
+
+        // TODO: Exception 생성
+        if (!m.matches()) {
+            throw new RuntimeException();
+        }
+        return m.group(2);
     }
 }

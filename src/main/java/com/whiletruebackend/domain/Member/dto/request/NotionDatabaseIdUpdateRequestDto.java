@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NotionDatabaseIdUpdateRequestDto {
 
-    private String notionDatabaseId;
+    private String notionDatabaseUrl;
 
 }
