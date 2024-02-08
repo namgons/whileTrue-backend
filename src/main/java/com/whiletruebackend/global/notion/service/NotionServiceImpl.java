@@ -36,12 +36,11 @@ public class NotionServiceImpl implements NotionService {
             response = notionApi.getProblemList(notionApiKey, databaseId, startCursor);
             response.getResults().forEach(notionPage -> {
                 if (!notionPage.getArchived()) {
-                    QueryDatabaseResponseDto.NotionPageProperty property = notionPage.getProperties();
                     results.add(Problem.builder()
-                                        .problemSiteType(property.getProblemSite().getSelect().getName())
-                                        .problemNumber(property.getProblemNumber().getNumber())
-                                        .problemTitle(property.getProblemTitle().getTitle().get(0).getPlainText())
-                                        .url(property.getProblemUrl().getUrl())
+                                        .problemSiteType(notionPage.getProblemSite())
+                                        .problemNumber(notionPage.getProblemNumber())
+                                        .problemTitle(notionPage.getProblemTitle())
+                                        .url(notionPage.getProblemUrl())
                                         .build());
                 }
             });

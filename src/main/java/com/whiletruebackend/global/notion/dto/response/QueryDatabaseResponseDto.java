@@ -25,6 +25,22 @@ public class QueryDatabaseResponseDto {
         private Boolean archived;
         private NotionPageProperty properties;
         private String url;
+
+        public String getProblemSite() {
+            return this.properties.getProblemSite().getSelect().getName();
+        }
+
+        public String getProblemNumber() {
+            return this.properties.getProblemNumber().getNumber();
+        }
+
+        public String getProblemTitle() {
+            return this.properties.getProblemTitle().getTitle().get(0).getPlainText();
+        }
+
+        public String getProblemUrl() {
+            return this.properties.getProblemUrl().getUrl();
+        }
     }
 
     @Getter

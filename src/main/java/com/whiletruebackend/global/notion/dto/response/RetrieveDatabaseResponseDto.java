@@ -19,6 +19,38 @@ public class RetrieveDatabaseResponseDto {
     private Boolean archived;
     @JsonProperty("public_url")
     private String publicUrl;
+    
+    public String getProblemSiteType() {
+        return this.properties.getProblemSite().getType();
+    }
+
+    public String getProblemSiteName() {
+        return this.properties.getProblemSite().getName();
+    }
+
+    public String getProblemNumberType() {
+        return this.properties.getProblemNumber().getType();
+    }
+
+    public String getProblemNumberName() {
+        return this.properties.getProblemNumber().getName();
+    }
+
+    public String getProblemTitleType() {
+        return this.properties.getProblemTitle().getType();
+    }
+
+    public String getProblemTitleName() {
+        return this.properties.getProblemTitle().getName();
+    }
+
+    public String getProblemUrlType() {
+        return this.properties.getProblemUrl().getType();
+    }
+
+    public String getProblemUrlName() {
+        return this.properties.getProblemUrl().getName();
+    }
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
