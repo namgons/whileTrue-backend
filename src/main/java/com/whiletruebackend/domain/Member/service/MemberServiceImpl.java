@@ -6,6 +6,7 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
+import com.whiletruebackend.global.error.exception.InvalidDatabaseUrlException;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
@@ -71,12 +72,10 @@ public class MemberServiceImpl implements MemberService {
 
     private String parseDatabaseId(String databaseUrl) {
         String pattern = "https:\\/\\/www\\.notion\\.so\\/(.+?)\\/(.+?)\\?v=(.+)";
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(databaseUrl);
+        Matcher m = Pattern.compile(pattern).matcher(databaseUrl);
 
-        // TODO: Exception 생성
         if (!m.matches()) {
-            throw new RuntimeException();
+            throw InvalidDatabaseUrlException.EXCEPTION;
         }
         return m.group(2);
     }

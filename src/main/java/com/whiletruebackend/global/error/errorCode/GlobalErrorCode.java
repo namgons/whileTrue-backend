@@ -15,9 +15,11 @@ public enum GlobalErrorCode implements BaseErrorCode {
     /**
      * 예시
      */
-    EXAMPLE_NOT_FOUND(NOT_FOUND, "EXAMPLE_404_1", "예시를 찾을 수 없는 오류입니다."),
+    EXAMPLE_NOT_FOUND(NOT_FOUND, "EXAMPLE-404-1", "예시를 찾을 수 없는 오류입니다."),
 
-    CUSTOM_INTERNAL_SERVER_ERROR(INTERNAL_SERVER_ERROR, "GLOBAL_500_1", "서버 오류. 관리자에게 문의 부탁드립니다.");
+    CUSTOM_INTERNAL_SERVER_ERROR(INTERNAL_SERVER_ERROR, "GLOBAL-500-1", "서버 오류. 관리자에게 문의 부탁드립니다."),
+
+    INVALID_DATABASE_URL(HttpStatus.NOT_ACCEPTABLE, "MEMBER-406-1", "주어진 URL이 적합하지 않습니다");
 
     private HttpStatus status;
     private String code;
