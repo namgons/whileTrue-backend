@@ -7,6 +7,8 @@ import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
 import com.whiletruebackend.global.error.exception.InvalidDatabaseUrlException;
+import com.whiletruebackend.global.error.exception.InvalidMemberDatabaseFormatException;
+import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
@@ -65,9 +67,25 @@ public class MemberServiceImpl implements MemberService {
         RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
                 notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
 
+        checkDatabaseColumn(retrieveDatabaseResponseDto);
+
         NotionSpace notionSpace = member.getNotionSpace();
         notionSpace.updateDatabase(retrieveDatabaseResponseDto);
         return notionSpaceRepository.save(notionSpace);
+    }
+
+    private void checkDatabaseColumn(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
+        if (!retrieveDatabaseResponseDto.getProblemSiteName().equals(RequiredColumn.Name.PROBLEM_SITE)
+                || !retrieveDatabaseResponseDto.getProblemSiteType().equals(RequiredColumn.Type.PROBLEM_SITE)
+                || !retrieveDatabaseResponseDto.getProblemNumberName().equals(RequiredColumn.Name.PROBLEM_NUMBER)
+                || !retrieveDatabaseResponseDto.getProblemNumberType().equals(RequiredColumn.Type.PROBLEM_NUMBER)
+                || !retrieveDatabaseResponseDto.getProblemTitleName().equals(RequiredColumn.Name.PROBLEM_TITLE)
+                || !retrieveDatabaseResponseDto.getProblemTitleType().equals(RequiredColumn.Type.PROBLEM_TITLE)
+                || !retrieveDatabaseResponseDto.getProblemUrlName().equals(RequiredColumn.Name.PROBLEM_URL)
+                || !retrieveDatabaseResponseDto.getProblemUrlType().equals(RequiredColumn.Type.PROBLEM_URL)
+        ) {
+            throw InvalidMemberDatabaseFormatException.EXCEPTION;
+        }
     }
 
     private String parseDatabaseId(String databaseUrl) {
