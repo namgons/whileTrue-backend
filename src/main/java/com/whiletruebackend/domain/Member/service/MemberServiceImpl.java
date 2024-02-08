@@ -25,33 +25,42 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public Long requestAccessToken(String accessCode) {
         NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
-        return saveNotionAccessToken(notionAccessToken);
+        Member member = saveNotionAccessToken(notionAccessToken);
+
+        if (notionAccessToken.getDuplicatedTemplateId() != null) {
+            saveNotionDatabaseInfo(member, notionAccessToken.getDuplicatedTemplateId());
+        }
+
+        return member.getId();
     }
 
     @Override
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
-                notionService.retrieveDatabase(member.getNotionApiKey(), notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
-
-        NotionSpace notionSpace = member.getNotionSpace();
-        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
-        NotionSpace savedNotionSpace = notionSpaceRepository.save(notionSpace);
-        return MemberNotionSpaceResponseDto.from(savedNotionSpace);
+        NotionSpace notionSpace = saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto.getNotionDatabaseId());
+        return MemberNotionSpaceResponseDto.from(notionSpace);
     }
-
+    
     @Override
     public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
     }
 
-    private Long saveNotionAccessToken(NotionAccessToken notionAccessToken) {
+    private Member saveNotionAccessToken(NotionAccessToken notionAccessToken) {
         NotionSpace notionSpace = notionAccessToken.toNotionSpaceEntity();
         Member member = notionAccessToken.toMemberEntity();
         member.updateNotionSpace(notionSpace);
 
         notionSpaceRepository.save(notionSpace);
-        Member savedMember = memberRepository.save(member);
-        return savedMember.getId();
+        return memberRepository.save(member);
+    }
+
+    private NotionSpace saveNotionDatabaseInfo(Member member, String databaseId) {
+        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
+                notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
+
+        NotionSpace notionSpace = member.getNotionSpace();
+        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
+        return notionSpaceRepository.save(notionSpace);
     }
 }
