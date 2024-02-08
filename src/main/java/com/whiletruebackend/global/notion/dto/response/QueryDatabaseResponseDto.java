@@ -1,6 +1,7 @@
 package com.whiletruebackend.global.notion.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,13 +48,13 @@ public class QueryDatabaseResponseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class NotionPageProperty {
 
-        @JsonProperty(RequiredColumn.PROBLEM_SITE)
+        @JsonProperty(RequiredColumn.Name.PROBLEM_SITE)
         private NotionPropertyType.Select problemSite;
-        @JsonProperty(RequiredColumn.PROBLEM_NUMBER)
+        @JsonProperty(RequiredColumn.Name.PROBLEM_NUMBER)
         private NotionPropertyType.Number problemNumber;
-        @JsonProperty(RequiredColumn.PROBLEM_TITLE)
+        @JsonProperty(RequiredColumn.Name.PROBLEM_TITLE)
         private NotionPropertyType.Title problemTitle;
-        @JsonProperty(RequiredColumn.PROBLEM_URL)
+        @JsonProperty(RequiredColumn.Name.PROBLEM_URL)
         private NotionPropertyType.Url problemUrl;
     }
 }

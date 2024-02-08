@@ -1,9 +1,9 @@
 package com.whiletruebackend.global.notion.utils;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.request.CreatePageRequestDto;
 import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
-import com.whiletruebackend.global.notion.dto.response.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import com.whiletruebackend.global.utils.ObjectMapperUtils;
@@ -91,11 +91,11 @@ public class NotionApiImpl implements NotionApi {
         Map<String, Object> formData = new HashMap<>();
         List<Map<String, Object>> filterList = new ArrayList<>();
         filterList.add(Map.of(
-                "property", RequiredColumn.PROBLEM_SITE,
+                "property", RequiredColumn.Name.PROBLEM_SITE,
                 "select", Map.of("equals", problem.getProblemSiteType())
         ));
         filterList.add(Map.of(
-                "property", RequiredColumn.PROBLEM_NUMBER,
+                "property", RequiredColumn.Name.PROBLEM_NUMBER,
                 "number", Map.of("equals", problem.getProblemNumber())
         ));
         formData.put("and", filterList);
