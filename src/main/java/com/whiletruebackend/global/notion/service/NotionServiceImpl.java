@@ -37,9 +37,9 @@ public class NotionServiceImpl implements NotionService {
             response.getResults().forEach(notionPage -> {
                 if (!notionPage.getArchived()) {
                     results.add(Problem.builder()
-                                        .problemSiteType(notionPage.getProblemSite())
-                                        .problemNumber(notionPage.getProblemNumber())
-                                        .problemTitle(notionPage.getProblemTitle())
+                                        .siteType(notionPage.getProblemSite())
+                                        .number(notionPage.getProblemNumber())
+                                        .title(notionPage.getProblemTitle())
                                         .url(notionPage.getProblemUrl())
                                         .build());
                 }

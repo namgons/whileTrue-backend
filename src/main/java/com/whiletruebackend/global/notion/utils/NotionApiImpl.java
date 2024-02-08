@@ -92,11 +92,11 @@ public class NotionApiImpl implements NotionApi {
         List<Map<String, Object>> filterList = new ArrayList<>();
         filterList.add(Map.of(
                 "property", RequiredColumn.Name.PROBLEM_SITE,
-                "select", Map.of("equals", problem.getProblemSiteType())
+                RequiredColumn.Type.PROBLEM_SITE, Map.of("equals", problem.getSiteType())
         ));
         filterList.add(Map.of(
                 "property", RequiredColumn.Name.PROBLEM_NUMBER,
-                "number", Map.of("equals", problem.getProblemNumber())
+                RequiredColumn.Type.PROBLEM_NUMBER, Map.of("equals", Integer.parseInt(problem.getNumber()))
         ));
         formData.put("and", filterList);
         String json = ObjectMapperUtils.mapToString(formData);

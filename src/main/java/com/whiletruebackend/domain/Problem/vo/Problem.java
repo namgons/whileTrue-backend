@@ -8,8 +8,8 @@ import lombok.*;
 @Builder
 public class Problem {
 
-    private String problemSiteType;
-    private String problemNumber;
-    private String problemTitle;
+    private String siteType;
+    private String number;
+    private String title;
     private String url;
 }

@@ -19,9 +19,9 @@ public class CreatePageRequestDto {
     public static CreatePageRequestDto from(String databaseId, Problem problem) {
 
         Properties properties = Properties.builder()
-                .problemSite(NotionRequestProperty.Select.create(problem.getProblemSiteType()))
-                .problemNumber(new NotionRequestProperty.Number(Integer.parseInt(problem.getProblemNumber())))
-                .problemTitle(NotionRequestProperty.Title.create(problem.getProblemTitle()))
+                .problemSite(NotionRequestProperty.Select.create(problem.getSiteType()))
+                .problemNumber(new NotionRequestProperty.Number(Integer.parseInt(problem.getNumber())))
+                .problemTitle(NotionRequestProperty.Title.create(problem.getTitle()))
                 .problemUrl(new NotionRequestProperty.Url(problem.getUrl()))
                 .build();
 
