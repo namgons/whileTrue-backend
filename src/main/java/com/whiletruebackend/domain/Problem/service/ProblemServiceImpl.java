@@ -19,7 +19,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public ProblemListResponseDto getProblemList(Member member) {
-        List<Problem> problemList = notionService.getProblemList(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId());
+        List<Problem> problemList = notionService.getAllProblemList(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId());
         return ProblemListResponseDto.from(problemList);
     }
 

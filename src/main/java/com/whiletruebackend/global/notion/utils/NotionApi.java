@@ -1,20 +1,19 @@
-package com.whiletruebackend.global.notion.service;
+package com.whiletruebackend.global.notion.utils;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 
-import java.util.List;
-
-public interface NotionService {
+public interface NotionApi {
 
     NotionAccessToken requestNotionToken(String accessCode);
 
     RetrieveDatabaseResponseDto retrieveDatabase(String notionApiKey, String databaseId);
 
-    List<Problem> getAllProblemList(String notionApiKey, String databaseId);
+    QueryDatabaseResponseDto getProblemList(String notionApiKey, String databaseId, String startCursor);
 
-    boolean isProblemExists(String notionApiKey, String databaseId, Problem problem);
+    QueryDatabaseResponseDto queryDatabaseBySiteTypeAndNumber(String notionApiKey, String databaseId, Problem problem);
 
     void insertNewProblem(String notionApiKey, String databaseId, Problem problem);
 }
