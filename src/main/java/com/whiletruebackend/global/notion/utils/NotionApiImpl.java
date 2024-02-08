@@ -68,7 +68,7 @@ public class NotionApiImpl implements NotionApi {
 
         if (startCursor != null) {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            formData.add("start_cursor", "startCursor");
+            formData.add("start_cursor", startCursor);
 
             return notionClient.post()
                     .body(BodyInserters.fromFormData(formData))
