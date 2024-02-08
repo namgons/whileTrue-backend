@@ -12,6 +12,10 @@ import java.util.List;
 public class QueryDatabaseResponseDto {
 
     List<NotionPage> results;
+    @JsonProperty("next_cursor")
+    private String nextCursor;
+    @JsonProperty("has_more")
+    private Boolean hasMore;
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
