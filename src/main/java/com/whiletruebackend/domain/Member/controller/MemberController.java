@@ -22,7 +22,7 @@ public class MemberController {
     // TODO: ACCESS TOKEN, REFRESH TOKEN 발급하기
     @GetMapping("/oauth/{accessCode}")
     public ResponseEntity<ResponseWrapper<Nullable>> getAccessToken(@PathVariable String accessCode) {
-        Long memberId = memberService.requestAccessToken(accessCode);
+        String memberId = memberService.requestAccessToken(accessCode);
         return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.");
     }
 

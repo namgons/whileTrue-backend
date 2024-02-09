@@ -6,7 +6,7 @@ import com.whiletruebackend.domain.Member.entity.Member;
 
 public interface MemberService {
 
-    Long requestAccessToken(String accessCode);
+    String requestAccessToken(String accessCode);
 
     MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto);
 

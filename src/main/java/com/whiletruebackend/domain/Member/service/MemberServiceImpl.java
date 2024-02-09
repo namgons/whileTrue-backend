@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Long requestAccessToken(String accessCode) {
+    public String requestAccessToken(String accessCode) {
         NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
         Member member = saveNotionAccessToken(notionAccessToken);
 
