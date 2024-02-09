@@ -6,7 +6,7 @@ import com.whiletruebackend.global.error.exception.AuthInvalidAuthorizationForma
 import com.whiletruebackend.global.error.exception.AuthNoAuthorizationException;
 import com.whiletruebackend.global.error.exception.AuthTokenExpiredException;
 import com.whiletruebackend.global.error.exception.MemberNotFoundException;
-import com.whiletruebackend.global.utils.JwtUtils;
+import com.whiletruebackend.global.utils.AuthHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +28,7 @@ import java.util.List;
 public class CustomJwtFilter extends OncePerRequestFilter {
 
     private final MemberRepository memberRepository;
+    private final AuthHelper authHelper;
     private final String secretKey;
 
     @Override
@@ -46,11 +47,11 @@ public class CustomJwtFilter extends OncePerRequestFilter {
 
         String token = authorization.split(" ")[1];
 
-        if (JwtUtils.isExpired(token, secretKey)) {
+        if (authHelper.isExpired(token, secretKey)) {
             throw AuthTokenExpiredException.EXCEPTION;
         }
 
-        String memberId = JwtUtils.getMemberIdFromJwt(token, secretKey);
+        String memberId = authHelper.getMemberIdFromJwt(token, secretKey);
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> MemberNotFoundException.EXCEPTION);
 

@@ -1,14 +1,18 @@
 package com.whiletruebackend.domain.Member.controller;
 
+import com.whiletruebackend.domain.Member.dto.Token;
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
+import com.whiletruebackend.domain.Member.dto.response.MemberTokenResponseDto;
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.service.MemberService;
 import com.whiletruebackend.global.response.JsonResponse;
 import com.whiletruebackend.global.response.ResponseWrapper;
+import com.whiletruebackend.global.utils.AuthHelper;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +22,16 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthHelper authHelper;
 
     // TODO: ACCESS TOKEN, REFRESH TOKEN 발급하기
     @GetMapping("/oauth/{accessCode}")
-    public ResponseEntity<ResponseWrapper<Nullable>> getAccessToken(@PathVariable String accessCode) {
-        String memberId = memberService.requestAccessToken(accessCode);
-        return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.");
+    public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> getAccessToken(
+            @PathVariable String accessCode, HttpServletResponse response) {
+        Token token = memberService.requestAccessToken(accessCode);
+        Cookie cookie = authHelper.createCookie(token.getRefreshToken());
+        response.setHeader("Set-Cookie", String.valueOf(cookie));
+        return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.", new MemberTokenResponseDto(token.getAccessToken()));
     }
 
     @GetMapping("/notion-space")

@@ -3,6 +3,7 @@ package com.whiletruebackend.global.config;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.global.filter.CustomJwtFilter;
 import com.whiletruebackend.global.filter.ExceptionHandlerFilter;
+import com.whiletruebackend.global.utils.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class AuthenticationConfig {
 
     private final MemberRepository memberRepository;
+    private final AuthHelper authHelper;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -38,7 +40,7 @@ public class AuthenticationConfig {
                 })
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new CustomJwtFilter(memberRepository, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomJwtFilter(memberRepository, authHelper, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new ExceptionHandlerFilter(), CustomJwtFilter.class)
                 .build();
     }

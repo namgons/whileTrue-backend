@@ -1,5 +1,6 @@
 package com.whiletruebackend.domain.Member.service;
 
+import com.whiletruebackend.domain.Member.dto.Token;
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
 import com.whiletruebackend.domain.Member.entity.Member;
@@ -12,6 +13,7 @@ import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
+import com.whiletruebackend.global.utils.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +29,11 @@ public class MemberServiceImpl implements MemberService {
     private final NotionSpaceRepository notionSpaceRepository;
     private final NotionService notionService;
 
+    private final AuthHelper authHelper;
+
     @Override
     @Transactional
-    public String requestAccessToken(String accessCode) {
+    public Token requestAccessToken(String accessCode) {
         NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
         Member member = saveNotionAccessToken(notionAccessToken);
 
@@ -37,7 +41,12 @@ public class MemberServiceImpl implements MemberService {
             saveNotionDatabaseInfo(member, notionAccessToken.getDuplicatedTemplateId());
         }
 
-        return member.getId();
+        Token token = new Token(
+                authHelper.createAccessToken(member),
+                authHelper.createRefreshToken(member)
+        );
+
+        return token;
     }
 
     @Override
