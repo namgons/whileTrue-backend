@@ -6,11 +6,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class JwtUtils {
 
-    public static String createJwt(UUID memberId, String secretKey, Long expiredMs) {
+    public static String createToken(String memberId, String secretKey, Long expiredMs) {
         Claims claims = Jwts.claims();
         claims.put("member_id", memberId);
 
