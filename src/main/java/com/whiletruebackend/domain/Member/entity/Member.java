@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 @Getter
 @Entity
@@ -12,9 +13,9 @@ import lombok.NoArgsConstructor;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @UuidGenerator
     @Column(name = "member_id")
-    private Long id;
+    private String id;
 
     private String userId;
     private String userName;
@@ -23,7 +24,6 @@ public class Member {
     private String notionApiKey;
     private String tokenType;
 
-    private String accessToken;
     private String refreshToken;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -46,10 +46,6 @@ public class Member {
 
     public void updateNotionApiKey(String notionApiKey) {
         this.notionApiKey = notionApiKey;
-    }
-
-    public void updateAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
     public void updateRefreshToken(String refreshToken) {
