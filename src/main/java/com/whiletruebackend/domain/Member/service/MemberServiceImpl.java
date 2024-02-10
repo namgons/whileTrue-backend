@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Member.service;
 
-import com.whiletruebackend.domain.Member.dto.Token;
+import com.whiletruebackend.domain.Member.dto.TokenDto;
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
 import com.whiletruebackend.domain.Member.entity.Member;
@@ -33,20 +33,22 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public Token requestAccessToken(String accessCode) {
+    public TokenDto requestAccessToken(String accessCode) {
         NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
+        System.out.println(notionAccessToken);
         Member member = saveNotionAccessToken(notionAccessToken);
+        System.out.println("member = " + member.getUserName());
 
         if (notionAccessToken.getDuplicatedTemplateId() != null) {
             saveNotionDatabaseInfo(member, notionAccessToken.getDuplicatedTemplateId());
         }
 
-        Token token = new Token(
+        System.out.println(memberRepository.findAll().size());
+
+        return new TokenDto(
                 authHelper.createAccessToken(member),
                 authHelper.createRefreshToken(member)
         );
-
-        return token;
     }
 
     @Override
@@ -67,9 +69,9 @@ public class MemberServiceImpl implements MemberService {
         NotionSpace notionSpace = notionAccessToken.toNotionSpaceEntity();
         Member member = notionAccessToken.toMemberEntity();
         member.updateNotionSpace(notionSpace);
-
+        Member savedMember = memberRepository.save(member);
         notionSpaceRepository.save(notionSpace);
-        return memberRepository.save(member);
+        return savedMember;
     }
 
     private NotionSpace saveNotionDatabaseInfo(Member member, String databaseId) {

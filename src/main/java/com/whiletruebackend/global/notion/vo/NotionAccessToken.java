@@ -5,9 +5,11 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
+@ToString
 public class NotionAccessToken {
 
     @JsonProperty("access_token")
@@ -50,6 +52,7 @@ public class NotionAccessToken {
 
 @Getter
 @NoArgsConstructor
+@ToString
 class NotionOwner {
 
     private String type;
@@ -58,6 +61,7 @@ class NotionOwner {
 
 @Getter
 @NoArgsConstructor
+@ToString
 class NotionUser {
 
     private String object;

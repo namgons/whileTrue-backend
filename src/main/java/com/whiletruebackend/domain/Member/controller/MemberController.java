@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Member.controller;
 
-import com.whiletruebackend.domain.Member.dto.Token;
+import com.whiletruebackend.domain.Member.dto.TokenDto;
 import com.whiletruebackend.domain.Member.dto.request.NotionDatabaseIdUpdateRequestDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberNotionSpaceResponseDto;
 import com.whiletruebackend.domain.Member.dto.response.MemberTokenResponseDto;
@@ -10,8 +10,10 @@ import com.whiletruebackend.global.response.JsonResponse;
 import com.whiletruebackend.global.response.ResponseWrapper;
 import com.whiletruebackend.global.utils.AuthHelper;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +21,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
     private final AuthHelper authHelper;
 
-    // TODO: ACCESS TOKEN, REFRESH TOKEN 발급하기
     @GetMapping("/oauth/{accessCode}")
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> getAccessToken(
             @PathVariable String accessCode, HttpServletResponse response) {
-        Token token = memberService.requestAccessToken(accessCode);
-        Cookie cookie = authHelper.createCookie(token.getRefreshToken());
+        log.info("[REQ] getAccessToken");
+        TokenDto tokenDto = memberService.requestAccessToken(accessCode);
+        System.out.println(tokenDto);
+        Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
         response.setHeader("Set-Cookie", String.valueOf(cookie));
-        return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.", new MemberTokenResponseDto(token.getAccessToken()));
+        return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
+    }
+
+    @GetMapping("/auth/refresh-token")
+    public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        TokenDto tokenDto = authHelper.refreshToken(request);
+        Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
+        response.setHeader("Set-Cookie", String.valueOf(cookie));
+        return JsonResponse.ok("Access Token을 새로 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
     }
 
     @GetMapping("/notion-space")

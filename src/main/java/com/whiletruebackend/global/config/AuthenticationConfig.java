@@ -34,10 +34,12 @@ public class AuthenticationConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequest) -> {
                     authorizeRequest.requestMatchers(
-                            "/member/oauth/*"
+                            "/member/oauth/**",
+                            "/member/auth/**",
+                            "/h2-console"
                     ).permitAll();
-                    authorizeRequest.anyRequest().authenticated();
                 })
+                .authorizeHttpRequests(authorizeRequest -> authorizeRequest.anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new CustomJwtFilter(memberRepository, authHelper, secretKey), UsernamePasswordAuthenticationFilter.class)
