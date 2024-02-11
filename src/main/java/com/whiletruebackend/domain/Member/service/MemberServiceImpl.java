@@ -78,6 +78,8 @@ public class MemberServiceImpl implements MemberService {
         RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
                 notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
 
+        System.out.println(retrieveDatabaseResponseDto);
+
         checkDatabaseColumn(retrieveDatabaseResponseDto);
 
         NotionSpace notionSpace = member.getNotionSpace();

@@ -5,11 +5,13 @@ import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class RetrieveDatabaseResponseDto {
 
     private String id;
@@ -55,6 +57,7 @@ public class RetrieveDatabaseResponseDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @ToString
     public static class NotionDatabaseProperties {
 
         @JsonProperty(RequiredColumn.Name.PROBLEM_SITE)
@@ -69,6 +72,7 @@ public class RetrieveDatabaseResponseDto {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @ToString
     public static class ColumnProperty {
 
         private String id;

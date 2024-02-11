@@ -1,6 +1,7 @@
 package com.whiletruebackend.global.notion.utils;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.global.config.RestTemplateResponseErrorHandler;
 import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.request.CreatePageRequestDto;
 import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
@@ -34,7 +35,11 @@ public class NotionApiImpl implements NotionApi {
     private final String NOTION_DATABASE_ENDPOINT = "https://api.notion.com/v1/databases";
     private final String NOTION_PAGE_ENDPOINT = "https://api.notion.com/v1/pages";
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private static RestTemplate restTemplate = new RestTemplate();
+
+    static {
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
+    }
 
     @Override
     public NotionAccessToken requestNotionToken(String accessCode) {
@@ -44,12 +49,12 @@ public class NotionApiImpl implements NotionApi {
         headers.setBasicAuth(encoded);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("grant_type", "authorization_code");
-        formData.add("code", accessCode);
-        formData.add("redirect_uri", REDIRECT_URI);
+        Map<String, String> formData = new HashMap<>();
+        formData.put("grant_type", "authorization_code");
+        formData.put("code", accessCode);
+        formData.put("redirect_uri", REDIRECT_URI);
 
-        HttpEntity<String> entity = new HttpEntity<>(formData.toString(), headers);
+        HttpEntity<Map<String, String>> entity = new HttpEntity<>(formData, headers);
 
         return restTemplate.exchange(
                 NOTION_TOKEN_ENDPOINT,
