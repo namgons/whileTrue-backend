@@ -31,6 +31,7 @@ public class MemberController {
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> getAccessToken(
             @PathVariable String accessCode, HttpServletResponse response) {
         TokenDto tokenDto = memberService.requestAccessToken(accessCode);
+        System.out.println("tokenDto = " + tokenDto);
         Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
         response.setHeader("Set-Cookie", String.valueOf(cookie));
         return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
@@ -39,6 +40,7 @@ public class MemberController {
     @GetMapping("/auth/refresh-token")
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         TokenDto tokenDto = authHelper.refreshToken(request);
+        System.out.println("tokenDto = " + tokenDto);
         Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
         response.setHeader("Set-Cookie", String.valueOf(cookie));
         return JsonResponse.ok("Access Token을 새로 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
