@@ -6,14 +6,15 @@ import com.whiletruebackend.global.notion.dto.request.CreatePageRequestDto;
 import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.vo.NotionAccessToken;
-import com.whiletruebackend.global.utils.ObjectMapperUtils;
-import com.whiletruebackend.global.utils.WebClientUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -33,60 +34,70 @@ public class NotionApiImpl implements NotionApi {
     private final String NOTION_DATABASE_ENDPOINT = "https://api.notion.com/v1/databases";
     private final String NOTION_PAGE_ENDPOINT = "https://api.notion.com/v1/pages";
 
+    private final RestTemplate restTemplate = new RestTemplate();
+
     @Override
     public NotionAccessToken requestNotionToken(String accessCode) {
         String encoded = Base64.getEncoder().encodeToString(String.format("%s:%s", OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET).getBytes());
-        WebClient webClient = WebClientUtils.createTokenRequestWebClient(NOTION_TOKEN_ENDPOINT, encoded);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(encoded);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "authorization_code");
         formData.add("code", accessCode);
         formData.add("redirect_uri", REDIRECT_URI);
 
-        return webClient.post()
-                .body(BodyInserters.fromFormData(formData))
-                .retrieve()
-                .bodyToMono(NotionAccessToken.class)
-                .block();
+        HttpEntity<String> entity = new HttpEntity<>(formData.toString(), headers);
+
+        return restTemplate.exchange(
+                NOTION_TOKEN_ENDPOINT,
+                HttpMethod.POST,
+                entity,
+                NotionAccessToken.class).getBody();
     }
 
     @Override
     public RetrieveDatabaseResponseDto retrieveDatabase(String notionApiKey, String databaseId) {
         String url = String.format("%s/%s", NOTION_DATABASE_ENDPOINT, databaseId);
-        WebClient notionClient = WebClientUtils.createNotionClient(url, notionApiKey);
 
-        return notionClient.get()
-                .retrieve()
-                .bodyToMono(RetrieveDatabaseResponseDto.class)
-                .block();
+        HttpHeaders headers = createDefaultHeader(notionApiKey);
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        return restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                RetrieveDatabaseResponseDto.class).getBody();
     }
 
     @Override
     public QueryDatabaseResponseDto getProblemList(String notionApiKey, String databaseId, String startCursor) {
         String url = String.format("%s/%s/query", NOTION_DATABASE_ENDPOINT, databaseId);
-        WebClient notionClient = WebClientUtils.createNotionClient(url, notionApiKey);
+
+        HttpHeaders headers = createDefaultHeader(notionApiKey);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         if (startCursor != null) {
             MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
             formData.add("start_cursor", startCursor);
-
-            return notionClient.post()
-                    .body(BodyInserters.fromFormData(formData))
-                    .retrieve()
-                    .bodyToMono(QueryDatabaseResponseDto.class)
-                    .block();
+            entity = new HttpEntity<>(formData.toString(), headers);
         }
 
-        return notionClient.post()
-                .retrieve()
-                .bodyToMono(QueryDatabaseResponseDto.class)
-                .block();
+        return restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                QueryDatabaseResponseDto.class).getBody();
     }
 
     @Override
     public QueryDatabaseResponseDto queryDatabaseBySiteTypeAndNumber(String notionApiKey, String databaseId, Problem problem) {
         String url = String.format("%s/%s/query", NOTION_DATABASE_ENDPOINT, databaseId);
-        WebClient notionClient = WebClientUtils.createNotionClient(url, notionApiKey);
+
+        HttpHeaders headers = createDefaultHeader(notionApiKey);
 
         Map<String, Object> formData = new HashMap<>();
         List<Map<String, Object>> filterList = new ArrayList<>();
@@ -99,24 +110,33 @@ public class NotionApiImpl implements NotionApi {
                 RequiredColumn.Type.PROBLEM_NUMBER, Map.of("equals", Integer.parseInt(problem.getNumber()))
         ));
         formData.put("and", filterList);
-        String json = ObjectMapperUtils.mapToString(formData);
 
-        return notionClient.post()
-                .bodyValue(json)
-                .retrieve()
-                .bodyToMono(QueryDatabaseResponseDto.class)
-                .block();
+        HttpEntity<String> entity = new HttpEntity<>(formData.toString(), headers);
+
+        return restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                QueryDatabaseResponseDto.class).getBody();
     }
 
     @Override
     public void insertNewProblem(String notionApiKey, String databaseId, Problem problem) {
-        WebClient notionClient = WebClientUtils.createNotionClient(NOTION_PAGE_ENDPOINT, notionApiKey);
-
+        HttpHeaders headers = createDefaultHeader(notionApiKey);
         CreatePageRequestDto body = CreatePageRequestDto.from(databaseId, problem);
-        notionClient.post()
-                .bodyValue(body)
-                .retrieve()
-                .bodyToMono(Object.class)
-                .block();
+        HttpEntity<CreatePageRequestDto> entity = new HttpEntity<>(body, headers);
+
+        restTemplate.exchange(
+                NOTION_PAGE_ENDPOINT,
+                HttpMethod.POST,
+                entity,
+                String.class);
+    }
+
+    private HttpHeaders createDefaultHeader(String notionApiKey) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(notionApiKey);
+        headers.set("Notion-Version", "2022-06-28");
+        return headers;
     }
 }
