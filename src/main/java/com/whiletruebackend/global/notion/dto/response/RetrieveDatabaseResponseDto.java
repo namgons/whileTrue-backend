@@ -23,36 +23,20 @@ public class RetrieveDatabaseResponseDto {
     @JsonProperty("public_url")
     private String publicUrl;
 
-    public String getProblemSiteType() {
-        return this.properties.getProblemSite().getType();
+    public ColumnProperty getProblemSiteProperty() {
+        return this.properties.getProblemSite();
     }
 
-    public String getProblemSiteName() {
-        return this.properties.getProblemSite().getName();
+    public ColumnProperty getProblemNumberProperty() {
+        return this.properties.getProblemNumber();
     }
 
-    public String getProblemNumberType() {
-        return this.properties.getProblemNumber().getType();
+    public ColumnProperty getProblemTitleProperty() {
+        return this.properties.getProblemTitle();
     }
 
-    public String getProblemNumberName() {
-        return this.properties.getProblemNumber().getName();
-    }
-
-    public String getProblemTitleType() {
-        return this.properties.getProblemTitle().getType();
-    }
-
-    public String getProblemTitleName() {
-        return this.properties.getProblemTitle().getName();
-    }
-
-    public String getProblemUrlType() {
-        return this.properties.getProblemUrl().getType();
-    }
-
-    public String getProblemUrlName() {
-        return this.properties.getProblemUrl().getName();
+    public ColumnProperty getProblemUrlProperty() {
+        return this.properties.getProblemUrl();
     }
 
     @Getter

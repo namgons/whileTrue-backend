@@ -35,15 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public TokenDto requestAccessToken(String accessCode) {
         NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
-        System.out.println(notionAccessToken);
         Member member = saveNotionAccessToken(notionAccessToken);
-        System.out.println("member = " + member.getUserName());
-
-        if (notionAccessToken.getDuplicatedTemplateId() != null) {
-            saveNotionDatabaseInfo(member, notionAccessToken.getDuplicatedTemplateId());
-        }
-
-        System.out.println(memberRepository.findAll().size());
 
         return new TokenDto(
                 authHelper.createAccessToken(member),
@@ -78,8 +70,6 @@ public class MemberServiceImpl implements MemberService {
         RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
                 notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
 
-        System.out.println(retrieveDatabaseResponseDto);
-
         checkDatabaseColumn(retrieveDatabaseResponseDto);
 
         NotionSpace notionSpace = member.getNotionSpace();
@@ -88,14 +78,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private void checkDatabaseColumn(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
-        if (!retrieveDatabaseResponseDto.getProblemSiteName().equals(RequiredColumn.Name.PROBLEM_SITE)
-                || !retrieveDatabaseResponseDto.getProblemSiteType().equals(RequiredColumn.Type.PROBLEM_SITE)
-                || !retrieveDatabaseResponseDto.getProblemNumberName().equals(RequiredColumn.Name.PROBLEM_NUMBER)
-                || !retrieveDatabaseResponseDto.getProblemNumberType().equals(RequiredColumn.Type.PROBLEM_NUMBER)
-                || !retrieveDatabaseResponseDto.getProblemTitleName().equals(RequiredColumn.Name.PROBLEM_TITLE)
-                || !retrieveDatabaseResponseDto.getProblemTitleType().equals(RequiredColumn.Type.PROBLEM_TITLE)
-                || !retrieveDatabaseResponseDto.getProblemUrlName().equals(RequiredColumn.Name.PROBLEM_URL)
-                || !retrieveDatabaseResponseDto.getProblemUrlType().equals(RequiredColumn.Type.PROBLEM_URL)
+        if (retrieveDatabaseResponseDto.getProblemSiteProperty() == null
+                || retrieveDatabaseResponseDto.getProblemNumberProperty() == null
+                || retrieveDatabaseResponseDto.getProblemTitleProperty() == null
+                || retrieveDatabaseResponseDto.getProblemUrlProperty() == null
+                || !retrieveDatabaseResponseDto.getProblemSiteProperty().getType().equals(RequiredColumn.Type.PROBLEM_SITE)
+                || !retrieveDatabaseResponseDto.getProblemNumberProperty().getType().equals(RequiredColumn.Type.PROBLEM_NUMBER)
+                || !retrieveDatabaseResponseDto.getProblemTitleProperty().getType().equals(RequiredColumn.Type.PROBLEM_TITLE)
+                || !retrieveDatabaseResponseDto.getProblemUrlProperty().getType().equals(RequiredColumn.Type.PROBLEM_URL)
         ) {
             throw InvalidMemberDatabaseFormatException.EXCEPTION;
         }

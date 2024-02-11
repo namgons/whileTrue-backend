@@ -3,13 +3,9 @@ package com.whiletruebackend.global.utils;
 import com.whiletruebackend.domain.Member.dto.TokenDto;
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
-import com.whiletruebackend.global.error.exception.AuthInvalidTokenException;
-import com.whiletruebackend.global.error.exception.AuthRefreshTokenExpiredException;
-import com.whiletruebackend.global.error.exception.AuthRefreshTokenNotFoundException;
-import com.whiletruebackend.global.error.exception.MemberNotFoundException;
-import io.jsonwebtoken.Claims;
+import com.whiletruebackend.global.error.exception.*;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
@@ -47,23 +45,29 @@ public class AuthHelper {
     }
 
     private String createToken(String memberId, String secretKey, Long expiredMs) {
-        Claims claims = Jwts.claims();
-        claims.put("member_id", memberId);
+        try {
+            SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+            return Jwts.builder()
+                    .claim("member_id", memberId)
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .signWith(key)
+                    .compact();
+        } catch (Exception e) {
+            throw AuthTokenCreationErrorException.EXCEPTION;
+        }
     }
 
     public boolean isExpired(String token, String secretKey) {
         try {
+            SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
             return Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
                     .getExpiration()
                     .before(new Date());
         } catch (Exception e) {
@@ -73,10 +77,13 @@ public class AuthHelper {
 
     public String getMemberIdFromJwt(String token, String secretKey) {
         try {
+            SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
             return Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
-                    .getBody()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
                     .get("member_id", String.class);
         } catch (Exception e) {
             throw AuthInvalidTokenException.EXCEPTION;

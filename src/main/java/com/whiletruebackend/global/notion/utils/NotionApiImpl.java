@@ -1,7 +1,7 @@
 package com.whiletruebackend.global.notion.utils;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
-import com.whiletruebackend.global.config.RestTemplateResponseErrorHandler;
+import com.whiletruebackend.global.error.RestTemplateResponseErrorHandler;
 import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.request.CreatePageRequestDto;
 import com.whiletruebackend.global.notion.dto.response.QueryDatabaseResponseDto;
