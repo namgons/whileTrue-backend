@@ -65,6 +65,7 @@ public class NotionApiImpl implements NotionApi {
 
     @Override
     public RetrieveDatabaseResponseDto retrieveDatabase(String notionApiKey, String databaseId) {
+        System.out.println("NotionApiImpl.retrieveDatabase");
         String url = String.format("%s/%s", NOTION_DATABASE_ENDPOINT, databaseId);
 
         HttpHeaders headers = createDefaultHeader(notionApiKey);

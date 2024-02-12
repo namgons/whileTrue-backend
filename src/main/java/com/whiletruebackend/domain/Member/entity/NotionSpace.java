@@ -25,7 +25,7 @@ public class NotionSpace {
     private String databaseIcon;
     private String databaseTitle;
 
-    @OneToOne(mappedBy = "notionSpace", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "notionSpace")
     private Member member;
 
     @Builder

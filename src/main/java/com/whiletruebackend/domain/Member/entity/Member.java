@@ -26,7 +26,7 @@ public class Member {
 
     private String refreshToken;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "notion_space_id")
     private NotionSpace notionSpace;
 

@@ -44,11 +44,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
         String databaseUrl = notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl();
         String databaseId = parseDatabaseId(databaseUrl);
-        NotionSpace notionSpace = saveNotionDatabaseInfo(member, databaseId);
+
+        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
+
+        checkDatabaseColumn(retrieveDatabaseResponseDto);
+
+        NotionSpace notionSpace = member.getNotionSpace();
+        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
+        notionSpaceRepository.save(notionSpace);
+        
         return MemberNotionSpaceResponseDto.from(notionSpace);
     }
 
@@ -64,17 +73,6 @@ public class MemberServiceImpl implements MemberService {
         Member savedMember = memberRepository.save(member);
         notionSpaceRepository.save(notionSpace);
         return savedMember;
-    }
-
-    private NotionSpace saveNotionDatabaseInfo(Member member, String databaseId) {
-        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto =
-                notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
-
-        checkDatabaseColumn(retrieveDatabaseResponseDto);
-
-        NotionSpace notionSpace = member.getNotionSpace();
-        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
-        return notionSpaceRepository.save(notionSpace);
     }
 
     private void checkDatabaseColumn(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
