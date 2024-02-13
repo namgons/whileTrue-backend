@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 public class NotionRequestProperty {
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class Select {
@@ -21,6 +22,7 @@ public class NotionRequestProperty {
         }
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class SelectItem {
@@ -28,6 +30,7 @@ public class NotionRequestProperty {
         private String name;
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class Title {
@@ -39,6 +42,7 @@ public class NotionRequestProperty {
         }
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class Text {
@@ -46,6 +50,7 @@ public class NotionRequestProperty {
         private TextContent text;
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class TextContent {
@@ -53,6 +58,7 @@ public class NotionRequestProperty {
         private String content;
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class Number {
@@ -60,6 +66,7 @@ public class NotionRequestProperty {
         private Integer number;
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class Url {

@@ -29,7 +29,7 @@ public class CreatePageRequestDto {
                 .build();
     }
 
-
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Parent {
@@ -39,6 +39,7 @@ public class CreatePageRequestDto {
         private String databaseId;
     }
 
+    @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @Builder
