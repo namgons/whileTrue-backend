@@ -35,8 +35,7 @@ public class AuthenticationConfig {
                 .authorizeHttpRequests((authorizeRequest) -> {
                     authorizeRequest.requestMatchers(
                             "/member/oauth/**",
-                            "/member/auth/**",
-                            "/h2-console"
+                            "/member/auth/**"
                     ).permitAll();
                 })
                 .authorizeHttpRequests(authorizeRequest -> authorizeRequest.anyRequest().authenticated())
