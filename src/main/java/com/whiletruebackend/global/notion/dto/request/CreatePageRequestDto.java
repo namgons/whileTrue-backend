@@ -3,11 +3,9 @@ package com.whiletruebackend.global.notion.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.whiletruebackend.domain.Problem.vo.Problem;
 import com.whiletruebackend.global.notion.dto.RequiredColumn;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
