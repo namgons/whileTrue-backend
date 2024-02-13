@@ -1,13 +1,11 @@
 package com.whiletruebackend.domain.Problem.dto.response;
 
 import com.whiletruebackend.domain.Problem.vo.Problem;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
