@@ -9,6 +9,7 @@ import com.whiletruebackend.global.response.JsonResponse;
 import com.whiletruebackend.global.response.ResponseWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class ProblemController {
     }
 
     @PostMapping
-    public ResponseEntity<?> insertNewProblem(
+    public ResponseEntity<ResponseWrapper<Nullable>> insertNewProblem(
             @AuthenticationPrincipal Member member,
             @RequestBody ProblemRequestDto problemRequestDto) {
         problemService.insertNewProblem(member, problemRequestDto);
