@@ -65,7 +65,6 @@ public class NotionApiImpl implements NotionApi {
 
     @Override
     public RetrieveDatabaseResponseDto retrieveDatabase(String notionApiKey, String databaseId) {
-        System.out.println("NotionApiImpl.retrieveDatabase");
         String url = String.format("%s/%s", NOTION_DATABASE_ENDPOINT, databaseId);
 
         HttpHeaders headers = createDefaultHeader(notionApiKey);
@@ -142,6 +141,7 @@ public class NotionApiImpl implements NotionApi {
     private HttpHeaders createDefaultHeader(String notionApiKey) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(notionApiKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Notion-Version", "2022-06-28");
         return headers;
     }

@@ -34,7 +34,6 @@ public class ProblemController {
         return JsonResponse.ok("새로운 문제를 저장했습니다.");
     }
 
-
     @PostMapping("/check")
     public ResponseEntity<ResponseWrapper<ProblemExistenceResponseDto>> checkIfProblemExits(
             @AuthenticationPrincipal Member member,

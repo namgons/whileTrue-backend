@@ -33,6 +33,6 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public void insertNewProblem(Member member, ProblemRequestDto problemRequestDto) {
-        notionService.insertNewProblem(member.getNotionApiKey(), member.getNotionApiKey(), problemRequestDto.getProblem());
+        notionService.insertNewProblem(member.getNotionApiKey(), member.getNotionSpace().getDatabaseId(), problemRequestDto.getProblem());
     }
 }

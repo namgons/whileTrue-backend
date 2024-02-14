@@ -24,7 +24,7 @@ public class CreatePageRequestDto {
                 .build();
 
         return CreatePageRequestDto.builder()
-                .parent(new Parent("database_id", databaseId))
+                .parent(new Parent(databaseId))
                 .properties(properties)
                 .build();
     }
@@ -34,7 +34,6 @@ public class CreatePageRequestDto {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Parent {
 
-        private String type;
         @JsonProperty("database_id")
         private String databaseId;
     }
