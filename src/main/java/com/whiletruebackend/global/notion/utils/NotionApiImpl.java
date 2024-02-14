@@ -114,9 +114,9 @@ public class NotionApiImpl implements NotionApi {
                 "property", RequiredColumn.Name.PROBLEM_NUMBER,
                 RequiredColumn.Type.PROBLEM_NUMBER, Map.of("equals", Integer.parseInt(problem.getNumber()))
         ));
-        formData.put("and", filterList);
+        formData.put("filter", Map.of("and", filterList));
 
-        HttpEntity<String> entity = new HttpEntity<>(formData.toString(), headers);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(formData, headers);
 
         return restTemplate.exchange(
                 url,
