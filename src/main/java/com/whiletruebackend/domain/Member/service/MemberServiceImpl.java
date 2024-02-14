@@ -7,8 +7,8 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
-import com.whiletruebackend.global.error.exception.InvalidDatabaseUrlException;
-import com.whiletruebackend.global.error.exception.InvalidMemberDatabaseFormatException;
+import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseFormatException;
+import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseUrlException;
 import com.whiletruebackend.global.notion.dto.RequiredColumn;
 import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
@@ -57,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
         NotionSpace notionSpace = member.getNotionSpace();
         notionSpace.updateDatabase(retrieveDatabaseResponseDto);
         notionSpaceRepository.save(notionSpace);
-        
+
         return MemberNotionSpaceResponseDto.from(notionSpace);
     }
 
@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
                 || !retrieveDatabaseResponseDto.getProblemTitleProperty().getType().equals(RequiredColumn.Type.PROBLEM_TITLE)
                 || !retrieveDatabaseResponseDto.getProblemUrlProperty().getType().equals(RequiredColumn.Type.PROBLEM_URL)
         ) {
-            throw InvalidMemberDatabaseFormatException.EXCEPTION;
+            throw MemberInvalidDatabaseFormatException.EXCEPTION;
         }
     }
 
@@ -94,7 +94,7 @@ public class MemberServiceImpl implements MemberService {
         Matcher m = Pattern.compile(pattern).matcher(databaseUrl);
 
         if (!m.matches()) {
-            throw InvalidDatabaseUrlException.EXCEPTION;
+            throw MemberInvalidDatabaseUrlException.EXCEPTION;
         }
         return m.group(2);
     }
