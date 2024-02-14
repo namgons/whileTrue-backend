@@ -7,6 +7,6 @@ public class InvalidDatabaseUrlException extends CustomException {
     public static final CustomException EXCEPTION = new InvalidDatabaseUrlException();
 
     public InvalidDatabaseUrlException() {
-        super(GlobalErrorCode.INVALID_DATABASE_URL);
+        super(GlobalErrorCode.MEMBER_INVALID_DATABASE_URL);
     }
 }

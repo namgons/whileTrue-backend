@@ -7,6 +7,6 @@ public class InvalidMemberDatabaseFormatException extends CustomException {
     public static final CustomException EXCEPTION = new InvalidMemberDatabaseFormatException();
 
     public InvalidMemberDatabaseFormatException() {
-        super(GlobalErrorCode.INVALID_MEMBER_DATABASE_FORMAT);
+        super(GlobalErrorCode.MEMBER_INVALID_DATABASE_FORMAT);
     }
 }
