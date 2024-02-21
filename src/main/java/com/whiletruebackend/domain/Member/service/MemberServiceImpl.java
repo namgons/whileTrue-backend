@@ -96,6 +96,12 @@ public class MemberServiceImpl implements MemberService {
         if (!m.matches()) {
             throw MemberInvalidDatabaseUrlException.EXCEPTION;
         }
-        return m.group(2);
+
+        String databaseId = m.group(2);
+        if (databaseId.length() != 32) {
+            throw MemberInvalidDatabaseUrlException.EXCEPTION;
+        }
+
+        return databaseId;
     }
 }
