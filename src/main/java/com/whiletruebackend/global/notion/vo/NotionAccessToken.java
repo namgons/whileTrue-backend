@@ -57,6 +57,10 @@ public class NotionAccessToken {
         NotionUser user = this.owner.getUser();
         member.updateMember(user.getId(), user.getName(), user.getAvatarUrl(), accessToken, tokenType);
     }
+
+    public void updateNotionSpace(NotionSpace notionSpace) {
+        notionSpace.updateWorkspace(workspaceId, workspaceIcon, workspaceName);
+    }
 }
 
 @Getter

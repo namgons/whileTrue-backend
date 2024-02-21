@@ -67,18 +67,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private Member saveNotionAccessToken(NotionAccessToken notionAccessToken) {
-        NotionSpace notionSpace = notionAccessToken.toNotionSpaceEntity();
         Member member = memberRepository.findByUserId(notionAccessToken.getNotionUserId());
 
         if (member != null) {
             notionAccessToken.updateMember(member);
+            notionAccessToken.updateNotionSpace(member.getNotionSpace());
         } else {
             member = notionAccessToken.toMemberEntity();
+            member.updateNotionSpace(notionAccessToken.toNotionSpaceEntity());
         }
 
-        member.updateNotionSpace(notionSpace);
         Member savedMember = memberRepository.save(member);
-        notionSpaceRepository.save(notionSpace);
+        notionSpaceRepository.save(member.getNotionSpace());
         return savedMember;
     }
 
