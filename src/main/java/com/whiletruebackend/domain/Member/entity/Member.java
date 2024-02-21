@@ -44,8 +44,12 @@ public class Member {
         notionSpace.updateMember(this);
     }
 
-    public void updateNotionApiKey(String notionApiKey) {
+    public void updateMember(String userId, String userName, String avatarUrl, String notionApiKey, String tokenType) {
+        this.userId = userId;
+        this.userName = userName;
+        this.avatarUrl = avatarUrl;
         this.notionApiKey = notionApiKey;
+        this.tokenType = tokenType;
     }
 
     public void updateRefreshToken(String refreshToken) {

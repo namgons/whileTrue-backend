@@ -30,6 +30,10 @@ public class NotionAccessToken {
     @JsonProperty("request_id")
     private String requestId;
 
+    public String getNotionUserId() {
+        return this.owner.getUser().getId();
+    }
+
     public Member toMemberEntity() {
         NotionUser user = this.owner.getUser();
         return Member.builder()
@@ -47,6 +51,11 @@ public class NotionAccessToken {
                 .workspaceIcon(workspaceIcon)
                 .workspaceName(workspaceName)
                 .build();
+    }
+
+    public void updateMember(Member member) {
+        NotionUser user = this.owner.getUser();
+        member.updateMember(user.getId(), user.getName(), user.getAvatarUrl(), accessToken, tokenType);
     }
 }
 
