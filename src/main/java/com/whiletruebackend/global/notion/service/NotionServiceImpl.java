@@ -18,7 +18,6 @@ public class NotionServiceImpl implements NotionService {
     private final NotionApi notionApi;
 
     public NotionAccessToken requestNotionToken(String accessCode) {
-        System.out.println("NotionServiceImpl.requestNotionToken");
         return notionApi.requestNotionToken(accessCode);
     }
 

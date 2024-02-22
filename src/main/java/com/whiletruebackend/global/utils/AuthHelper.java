@@ -4,6 +4,7 @@ import com.whiletruebackend.domain.Member.dto.TokenDto;
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.global.error.exception.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
@@ -30,7 +31,7 @@ public class AuthHelper {
 
     private final MemberRepository memberRepository;
 
-    private final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
+    private final String REFRESH_TOKEN_COOKIE_NAME = "refresh-token";
 
     public String createAccessToken(Member member) {
         return createToken(member.getId(), secretKey, accessTokenExpiry);
@@ -70,6 +71,8 @@ public class AuthHelper {
                     .getPayload()
                     .getExpiration()
                     .before(new Date());
+        } catch (ExpiredJwtException e) {
+            throw AuthTokenExpiredException.EXCEPTION;
         } catch (Exception e) {
             throw AuthInvalidTokenException.EXCEPTION;
         }
@@ -85,6 +88,8 @@ public class AuthHelper {
                     .parseSignedClaims(token)
                     .getPayload()
                     .get("member_id", String.class);
+        } catch (ExpiredJwtException e) {
+            throw AuthTokenExpiredException.EXCEPTION;
         } catch (Exception e) {
             throw AuthInvalidTokenException.EXCEPTION;
         }

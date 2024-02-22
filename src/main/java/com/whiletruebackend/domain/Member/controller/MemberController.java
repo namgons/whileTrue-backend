@@ -31,18 +31,16 @@ public class MemberController {
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> getAccessToken(
             @PathVariable String accessCode, HttpServletResponse response) {
         TokenDto tokenDto = memberService.requestAccessToken(accessCode);
-        System.out.println("tokenDto = " + tokenDto);
         Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
-        response.setHeader("Set-Cookie", String.valueOf(cookie));
+        response.addCookie(cookie);
         return JsonResponse.ok("Access Token과 Refresh Token을 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
     }
 
     @GetMapping("/auth/refresh-token")
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         TokenDto tokenDto = authHelper.refreshToken(request);
-        System.out.println("tokenDto = " + tokenDto);
         Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
-        response.setHeader("Set-Cookie", String.valueOf(cookie));
+        response.addCookie(cookie);
         return JsonResponse.ok("Access Token을 새로 발급했습니다.", new MemberTokenResponseDto(tokenDto.getAccessToken()));
     }
 
@@ -61,5 +59,4 @@ public class MemberController {
                 memberService.saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto);
         return JsonResponse.ok("데이터베이스 정보를 저장했습니다. 사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceResponseDto);
     }
-
 }
