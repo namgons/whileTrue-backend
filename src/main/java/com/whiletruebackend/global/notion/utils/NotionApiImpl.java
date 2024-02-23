@@ -13,8 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -83,19 +81,24 @@ public class NotionApiImpl implements NotionApi {
         String url = String.format("%s/%s/query", NOTION_DATABASE_ENDPOINT, databaseId);
 
         HttpHeaders headers = createDefaultHeader(notionApiKey);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        if (startCursor != null) {
-            MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-            formData.add("start_cursor", startCursor);
-            entity = new HttpEntity<>(formData.toString(), headers);
+        if (startCursor == null) {
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            return restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    QueryDatabaseResponseDto.class).getBody();
+        } else {
+            Map<String, String> formData = new HashMap<>();
+            formData.put("start_cursor", startCursor);
+            HttpEntity<Map<String, String>> entity = new HttpEntity<>(formData, headers);
+            return restTemplate.exchange(
+                    url,
+                    HttpMethod.POST,
+                    entity,
+                    QueryDatabaseResponseDto.class).getBody();
         }
-
-        return restTemplate.exchange(
-                url,
-                HttpMethod.POST,
-                entity,
-                QueryDatabaseResponseDto.class).getBody();
     }
 
     @Override
