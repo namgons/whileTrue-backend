@@ -59,10 +59,9 @@ public class AuthHelper {
         }
     }
 
-    public boolean isExpired(String token, String secretKey) {
+    public boolean isExpired(String token, String secretKey, String type) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-
             return Jwts.parser()
                     .verifyWith(key)
                     .build()
@@ -71,16 +70,19 @@ public class AuthHelper {
                     .getExpiration()
                     .before(new Date());
         } catch (ExpiredJwtException e) {
-            throw AuthTokenExpiredException.EXCEPTION;
+            if (type.equals("accessToken")) {
+                throw AuthTokenExpiredException.EXCEPTION;
+            } else {
+                throw AuthRefreshTokenExpiredException.EXCEPTION;
+            }
         } catch (Exception e) {
             throw AuthInvalidTokenException.EXCEPTION;
         }
     }
 
-    public String getMemberIdFromJwt(String token, String secretKey) {
+    public String getMemberIdFromJwt(String token, String secretKey, String type) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-
             return Jwts.parser()
                     .verifyWith(key)
                     .build()
@@ -88,7 +90,11 @@ public class AuthHelper {
                     .getPayload()
                     .get("member_id", String.class);
         } catch (ExpiredJwtException e) {
-            throw AuthTokenExpiredException.EXCEPTION;
+            if (type.equals("accessToken")) {
+                throw AuthTokenExpiredException.EXCEPTION;
+            } else {
+                throw AuthRefreshTokenExpiredException.EXCEPTION;
+            }
         } catch (Exception e) {
             throw AuthInvalidTokenException.EXCEPTION;
         }
@@ -107,12 +113,11 @@ public class AuthHelper {
         if (refreshToken == null) {
             throw AuthRefreshTokenNotFoundException.EXCEPTION;
         }
-        
-        if (isExpired(refreshToken, secretKey)) {
+        if (isExpired(refreshToken, secretKey, "refreshToken")) {
             throw AuthRefreshTokenExpiredException.EXCEPTION;
         }
 
-        String memberId = getMemberIdFromJwt(refreshToken, secretKey);
+        String memberId = getMemberIdFromJwt(refreshToken, secretKey, "refreshToken");
         Member member = memberRepository.findById(memberId).orElseThrow(() -> MemberNotFoundException.EXCEPTION);
         return new TokenDto(createAccessToken(member), createRefreshToken(member));
     }

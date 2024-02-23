@@ -50,11 +50,11 @@ public class CustomJwtFilter extends OncePerRequestFilter {
 
         String token = authorization.split(" ")[1];
 
-        if (authHelper.isExpired(token, secretKey)) {
+        if (authHelper.isExpired(token, secretKey, "accessToken")) {
             throw AuthTokenExpiredException.EXCEPTION;
         }
 
-        String memberId = authHelper.getMemberIdFromJwt(token, secretKey);
+        String memberId = authHelper.getMemberIdFromJwt(token, secretKey, "accessToken");
 
         Member member = memberRepository.findById(memberId).orElseThrow(() -> MemberNotFoundException.EXCEPTION);
 
