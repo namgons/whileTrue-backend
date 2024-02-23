@@ -8,7 +8,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -104,21 +103,11 @@ public class AuthHelper {
     }
 
     @Transactional
-    public TokenDto refreshToken(HttpServletRequest request) {
-        Cookie cookie = null;
-        for (Cookie targetCookie : request.getCookies()) {
-            if (targetCookie.getName().equals(REFRESH_TOKEN_COOKIE_NAME)) {
-                cookie = targetCookie;
-                break;
-            }
-        }
-
-        if (cookie == null) {
+    public TokenDto refreshToken(String refreshToken) {
+        if (refreshToken == null) {
             throw AuthRefreshTokenNotFoundException.EXCEPTION;
         }
-
-        String refreshToken = cookie.getAttribute(REFRESH_TOKEN_COOKIE_NAME);
-
+        
         if (isExpired(refreshToken, secretKey)) {
             throw AuthRefreshTokenExpiredException.EXCEPTION;
         }
