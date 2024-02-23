@@ -112,13 +112,15 @@ public class AuthHelper {
     public TokenDto refreshToken(String refreshToken) {
         if (refreshToken == null) {
             throw AuthRefreshTokenNotFoundException.EXCEPTION;
-        }
-        if (isExpired(refreshToken, secretKey, "refreshToken")) {
+        } else if (isExpired(refreshToken, secretKey, "refreshToken")) {
             throw AuthRefreshTokenExpiredException.EXCEPTION;
         }
 
         String memberId = getMemberIdFromJwt(refreshToken, secretKey, "refreshToken");
         Member member = memberRepository.findById(memberId).orElseThrow(() -> MemberNotFoundException.EXCEPTION);
+        if (!member.getRefreshToken().equals(refreshToken)) {
+            throw AuthInvalidRefreshTokenException.EXCEPTION;
+        }
         return new TokenDto(createAccessToken(member), createRefreshToken(member));
     }
 }

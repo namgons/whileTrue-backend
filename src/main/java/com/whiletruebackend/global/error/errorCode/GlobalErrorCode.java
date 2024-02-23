@@ -32,8 +32,9 @@ public enum GlobalErrorCode implements BaseErrorCode {
     AUTH_INVALID_AUTHORIZATION_FORMAT(FORBIDDEN, "AUTH-403-2", "Header에서 Authorizaion Code가 Bearer로 시작하지 않습니다."),
     AUTH_INVALID_TOKEN(FORBIDDEN, "AUTH-403-3", "토큰이 유효하지 않습니다."),
     AUTH_TOKEN_EXPIRED(UNAUTHORIZED, "AUTH-401-1", "토큰이 만료되었습니다."),
-    AUTH_REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "AUTH-4023-4", "Cookie에 Refresh Token이 없습니다."),
+    AUTH_REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "AUTH-404-1", "Cookie에 Refresh Token이 없습니다."),
     AUTH_REFRESH_TOKEN_EXPIRED(UNAUTHORIZED, "AUTH-401-2", "Refresh Token이 만료되었습니다."),
+    AUTH_INVALID_REFRESH_TOKEN(FORBIDDEN, "AUTH-403-4", "저장된 Refresh Token과 일치하지 않습니다."),
     AUTH_TOKEN_CREATION_ERROR(INTERNAL_SERVER_ERROR, "AUTH-500-1", "Token 생성하는 데에 오류가 있습니다.");
 
 
