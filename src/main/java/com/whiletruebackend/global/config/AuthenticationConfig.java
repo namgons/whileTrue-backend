@@ -35,7 +35,8 @@ public class AuthenticationConfig {
                 .authorizeHttpRequests((authorizeRequest) -> {
                     authorizeRequest.requestMatchers(
                             "/member/oauth/**",
-                            "/member/auth/**"
+                            "/member/auth/**",
+                            "/actuator/**"
                     ).permitAll();
                 })
                 .authorizeHttpRequests(authorizeRequest -> authorizeRequest.anyRequest().authenticated())

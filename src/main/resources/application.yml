@@ -6,6 +6,11 @@ spring:
     include: secret
     active: local
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
 ---
 spring:
   config:
