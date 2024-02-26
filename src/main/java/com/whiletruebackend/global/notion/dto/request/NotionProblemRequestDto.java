@@ -1,6 +1,6 @@
 package com.whiletruebackend.global.notion.dto.request;
 
-import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.domain.Problem.vo.ProbemPage;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +13,6 @@ public class ProblemRequestDto {
 
     private String notionApiKey;
     private String databaseId;
-    private Problem problem;
+    private ProbemPage problem;
 
 }
