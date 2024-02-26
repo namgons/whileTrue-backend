@@ -5,11 +5,12 @@ import com.whiletruebackend.domain.Problem.dto.request.ProblemRequestDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemExistenceResponseDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemListResponseDto;
 import com.whiletruebackend.global.error.exception.MemberDatabaseIdNotFoundException;
+import com.whiletruebackend.global.notion.dto.response.CheckProblemResponseDto;
+import com.whiletruebackend.global.notion.dto.response.ProblemPageListResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class ProblemServiceImpl implements ProblemService {
         String databaseId = member.getNotionSpace().getDatabaseId();
         isDatabaseIdExists(databaseId);
 
-        List<ProbemPage> problemList = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
+        ProblemPageListResponseDto problemPageListResponseDto = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
         return ProblemListResponseDto.from(problemList);
     }
 
@@ -31,8 +32,8 @@ public class ProblemServiceImpl implements ProblemService {
         String databaseId = member.getNotionSpace().getDatabaseId();
         isDatabaseIdExists(databaseId);
 
-        boolean isExists = notionService.isProblemExists(member.getNotionApiKey(), databaseId, problemRequestDto.getProblem());
-
+        CheckProblemResponseDto checkProblemResponseDto = notionService.isProblemExists(member.getNotionApiKey(), databaseId,
+                                                                                        problemRequestDto.getProblem());
         return ProblemExistenceResponseDto.from(isExists);
     }
 

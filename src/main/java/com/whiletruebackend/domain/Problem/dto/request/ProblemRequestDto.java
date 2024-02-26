@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Problem.dto.request;
 
-import com.whiletruebackend.domain.Problem.vo.ProbemPage;
+import com.whiletruebackend.domain.Problem.vo.Problem;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProblemRequestDto {
 
-    private ProbemPage problem;
+    private Problem problem;
 }
