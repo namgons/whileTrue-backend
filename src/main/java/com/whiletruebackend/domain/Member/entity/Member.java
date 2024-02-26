@@ -1,5 +1,6 @@
 package com.whiletruebackend.domain.Member.entity;
 
+import com.whiletruebackend.global.notion.dto.response.NotionTokenResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -44,15 +45,14 @@ public class Member {
         notionSpace.updateMember(this);
     }
 
-    public void updateMember(String userId, String userName, String avatarUrl, String notionApiKey, String tokenType) {
-        this.userId = userId;
-        this.userName = userName;
-        this.avatarUrl = avatarUrl;
-        this.notionApiKey = notionApiKey;
-        this.tokenType = tokenType;
-    }
-
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public void updateMember(NotionTokenResponseDto notionTokenDto) {
+        this.userName = notionTokenDto.getNotionUserName();
+        this.avatarUrl = notionTokenDto.getNotionUserAvatarUrl();
+        this.notionApiKey = notionTokenDto.getNotionApiKey();
+        this.tokenType = notionTokenDto.getTokenType();
     }
 }

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 public class CheckProblemResponseDto {
 
     private Boolean validCheck;
-    private Boolean sExists;
+    private Boolean isExists;
 
 }

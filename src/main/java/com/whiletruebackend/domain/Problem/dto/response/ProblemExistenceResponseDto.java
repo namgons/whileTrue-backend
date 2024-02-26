@@ -1,5 +1,6 @@
 package com.whiletruebackend.domain.Problem.dto.response;
 
+import com.whiletruebackend.global.notion.dto.response.CheckProblemResponseDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProblemExistenceResponseDto {
 
-    private boolean isProblemExits;
+    private boolean isProblemExists;
 
-    public static ProblemExistenceResponseDto from(boolean isProblemExits) {
-        return new ProblemExistenceResponseDto(isProblemExits);
+    public static ProblemExistenceResponseDto from(CheckProblemResponseDto checkProblemResponseDto) {
+        return new ProblemExistenceResponseDto(checkProblemResponseDto.getIsExists());
     }
 }

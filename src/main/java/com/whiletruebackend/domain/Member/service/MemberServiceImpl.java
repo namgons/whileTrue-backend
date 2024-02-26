@@ -7,12 +7,10 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
-import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseFormatException;
 import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseUrlException;
-import com.whiletruebackend.global.notion.dto.RequiredColumn;
-import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.response.CheckDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.response.NotionTokenResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
-import com.whiletruebackend.global.notion.vo.NotionAccessToken;
 import com.whiletruebackend.global.utils.AuthHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,8 +32,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public TokenDto requestAccessToken(String accessCode) {
-        NotionAccessToken notionAccessToken = notionService.requestNotionToken(accessCode);
-        Member member = saveNotionAccessToken(notionAccessToken);
+        NotionTokenResponseDto notionTokenResponseDto = notionService.requestNotionToken(accessCode);
+        Member member = saveNotionAccessToken(notionTokenResponseDto);
 
         return new TokenDto(
                 authHelper.createAccessToken(member),
@@ -50,12 +48,10 @@ public class MemberServiceImpl implements MemberService {
         String databaseUrl = notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl();
         String databaseId = parseDatabaseId(databaseUrl);
 
-        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.checkDatabase(member.getNotionApiKey(), databaseId);
-
-        checkDatabaseColumn(retrieveDatabaseResponseDto);
+        CheckDatabaseResponseDto databaseResponseDto = notionService.checkDatabase(member.getNotionApiKey(), databaseId);
 
         NotionSpace notionSpace = member.getNotionSpace();
-        notionSpace.updateDatabase(retrieveDatabaseResponseDto);
+        notionSpace.updateDatabase(databaseResponseDto);
         notionSpaceRepository.save(notionSpace);
 
         return MemberNotionSpaceResponseDto.from(notionSpace);
@@ -66,34 +62,20 @@ public class MemberServiceImpl implements MemberService {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
     }
 
-    private Member saveNotionAccessToken(NotionAccessToken notionAccessToken) {
-        Member member = memberRepository.findByUserId(notionAccessToken.getNotionUserId());
+    private Member saveNotionAccessToken(NotionTokenResponseDto notionTokenDto) {
+        Member member = memberRepository.findByUserId(notionTokenDto.getNotionUserId());
 
         if (member != null) {
-            notionAccessToken.updateMember(member);
-            notionAccessToken.updateNotionSpace(member.getNotionSpace());
+            member.updateMember(notionTokenDto);
+            member.getNotionSpace().updateNotionSpace(notionTokenDto);
         } else {
-            member = notionAccessToken.toMemberEntity();
-            member.updateNotionSpace(notionAccessToken.toNotionSpaceEntity());
+            member = notionTokenDto.toMemberEntity();
+            member.updateNotionSpace(notionTokenDto.toNotionSpaceEntity());
         }
 
         Member savedMember = memberRepository.save(member);
         notionSpaceRepository.save(member.getNotionSpace());
         return savedMember;
-    }
-
-    private void checkDatabaseColumn(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
-        if (retrieveDatabaseResponseDto.getProblemSiteProperty() == null
-                || retrieveDatabaseResponseDto.getProblemNumberProperty() == null
-                || retrieveDatabaseResponseDto.getProblemTitleProperty() == null
-                || retrieveDatabaseResponseDto.getProblemUrlProperty() == null
-                || !retrieveDatabaseResponseDto.getProblemSiteProperty().getType().equals(RequiredColumn.Type.PROBLEM_SITE)
-                || !retrieveDatabaseResponseDto.getProblemNumberProperty().getType().equals(RequiredColumn.Type.PROBLEM_NUMBER)
-                || !retrieveDatabaseResponseDto.getProblemTitleProperty().getType().equals(RequiredColumn.Type.PROBLEM_TITLE)
-                || !retrieveDatabaseResponseDto.getProblemUrlProperty().getType().equals(RequiredColumn.Type.PROBLEM_URL)
-        ) {
-            throw MemberInvalidDatabaseFormatException.EXCEPTION;
-        }
     }
 
     private String parseDatabaseId(String databaseUrl) {

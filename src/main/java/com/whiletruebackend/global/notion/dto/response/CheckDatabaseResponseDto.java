@@ -1,5 +1,6 @@
 package com.whiletruebackend.global.notion.dto.response;
 
+import com.whiletruebackend.domain.Problem.vo.IconType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ public class CheckDatabaseResponseDto {
 
     private Boolean checkValid;
     private String databaseId;
-    private String databaseIconType;
+    private IconType databaseIconType;
     private String databaseIconSrc;
     private String databaseTitle;
 

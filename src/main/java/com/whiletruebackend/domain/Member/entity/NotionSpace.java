@@ -1,6 +1,8 @@
 package com.whiletruebackend.domain.Member.entity;
 
-import com.whiletruebackend.global.notion.dto.response.RetrieveDatabaseResponseDto;
+import com.whiletruebackend.domain.Problem.vo.IconType;
+import com.whiletruebackend.global.notion.dto.response.CheckDatabaseResponseDto;
+import com.whiletruebackend.global.notion.dto.response.NotionTokenResponseDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,20 +20,23 @@ public class NotionSpace {
     private Long id;
 
     private String workspaceId;
-    private String workspaceIcon;
+    private IconType workspaceIconType;
+    private String workspaceIconSrc;
     private String workspaceName;
 
     private String databaseId;
-    private String databaseIcon;
+    private IconType databaseIconType;
+    private String databaseIconSrc;
     private String databaseTitle;
 
     @OneToOne(mappedBy = "notionSpace", fetch = FetchType.LAZY)
     private Member member;
 
     @Builder
-    public NotionSpace(String workspaceId, String workspaceIcon, String workspaceName) {
+    public NotionSpace(String workspaceId, IconType workspaceIconType, String workspaceIconSrc, String workspaceName) {
         this.workspaceId = workspaceId;
-        this.workspaceIcon = workspaceIcon;
+        this.workspaceIconType = workspaceIconType;
+        this.workspaceIconSrc = workspaceIconSrc;
         this.workspaceName = workspaceName;
     }
 
@@ -39,16 +44,17 @@ public class NotionSpace {
         this.member = member;
     }
 
-    public void updateWorkspace(String workspaceId, String workspaceIcon, String workspaceName) {
-        this.workspaceId = workspaceId;
-        this.workspaceIcon = workspaceIcon;
-        this.workspaceName = workspaceName;
+    public void updateDatabase(CheckDatabaseResponseDto databaseResponseDto) {
+        this.databaseId = databaseResponseDto.getDatabaseId();
+        this.databaseIconType = databaseResponseDto.getDatabaseIconType();
+        this.databaseIconSrc = databaseResponseDto.getDatabaseIconSrc();
+        this.databaseTitle = databaseResponseDto.getDatabaseTitle();
     }
 
-    public void updateDatabase(RetrieveDatabaseResponseDto retrieveDatabaseResponseDto) {
-        this.databaseId = retrieveDatabaseResponseDto.getId();
-        this.databaseIcon = retrieveDatabaseResponseDto.getIcon().getEmoji();
-        this.databaseTitle = retrieveDatabaseResponseDto.getTitle().get(0).getPlainText();
+    public void updateNotionSpace(NotionTokenResponseDto notionTokenDto) {
+        this.workspaceId = notionTokenDto.getWorkspaceId();
+        this.workspaceIconType = notionTokenDto.getWorkspaceIconType();
+        this.workspaceIconSrc = notionTokenDto.getWorkspaceIconSrc();
+        this.workspaceName = notionTokenDto.getWorkspaceName();
     }
-
 }

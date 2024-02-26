@@ -4,9 +4,12 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Problem.dto.request.ProblemRequestDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemExistenceResponseDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemListResponseDto;
+import com.whiletruebackend.domain.Problem.vo.ProblemPage;
 import com.whiletruebackend.global.error.exception.MemberDatabaseIdNotFoundException;
+import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseFormatException;
 import com.whiletruebackend.global.notion.dto.response.CheckProblemResponseDto;
 import com.whiletruebackend.global.notion.dto.response.ProblemPageListResponseDto;
+import com.whiletruebackend.global.notion.dto.response.SuccessResponseDto;
 import com.whiletruebackend.global.notion.service.NotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,11 @@ public class ProblemServiceImpl implements ProblemService {
         isDatabaseIdExists(databaseId);
 
         ProblemPageListResponseDto problemPageListResponseDto = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
-        return ProblemListResponseDto.from(problemList);
+
+        if (!problemPageListResponseDto.getCheckValid()) {
+            throw MemberInvalidDatabaseFormatException.EXCEPTION;
+        }
+        return ProblemListResponseDto.from(problemPageListResponseDto);
     }
 
     @Override
@@ -34,7 +41,11 @@ public class ProblemServiceImpl implements ProblemService {
 
         CheckProblemResponseDto checkProblemResponseDto = notionService.isProblemExists(member.getNotionApiKey(), databaseId,
                                                                                         problemRequestDto.getProblem());
-        return ProblemExistenceResponseDto.from(isExists);
+
+        if (!checkProblemResponseDto.getValidCheck()) {
+            throw MemberInvalidDatabaseFormatException.EXCEPTION;
+        }
+        return ProblemExistenceResponseDto.from(checkProblemResponseDto);
     }
 
     @Override
@@ -42,7 +53,12 @@ public class ProblemServiceImpl implements ProblemService {
         String databaseId = member.getNotionSpace().getDatabaseId();
         isDatabaseIdExists(databaseId);
 
-        notionService.insertNewProblem(member.getNotionApiKey(), databaseId, problemRequestDto.getProblem());
+        SuccessResponseDto successResponseDto = notionService.insertNewProblem(member.getNotionApiKey(), databaseId,
+                                                                               ProblemPage.fromProblem(problemRequestDto.getProblem()));
+
+        if (!successResponseDto.getIsSucceed()) {
+            throw MemberInvalidDatabaseFormatException.EXCEPTION;
+        }
     }
 
     private void isDatabaseIdExists(String databaseId) {

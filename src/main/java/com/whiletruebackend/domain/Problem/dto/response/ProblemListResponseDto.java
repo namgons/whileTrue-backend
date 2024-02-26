@@ -1,6 +1,7 @@
 package com.whiletruebackend.domain.Problem.dto.response;
 
-import com.whiletruebackend.domain.Problem.vo.ProbemPage;
+import com.whiletruebackend.domain.Problem.vo.ProblemPage;
+import com.whiletruebackend.global.notion.dto.response.ProblemPageListResponseDto;
 import lombok.*;
 
 import java.util.List;
@@ -12,12 +13,12 @@ import java.util.List;
 public class ProblemListResponseDto {
 
     private int totalCount;
-    private List<ProbemPage> problemList;
+    private List<ProblemPage> problemPageList;
 
-    public static ProblemListResponseDto from(List<ProbemPage> problemList) {
+    public static ProblemListResponseDto from(ProblemPageListResponseDto problemPageListResponseDto) {
         return ProblemListResponseDto.builder()
-                .totalCount(problemList.size())
-                .problemList(problemList)
+                .totalCount(problemPageListResponseDto.getProblemPageList().size())
+                .problemPageList(problemPageListResponseDto.getProblemPageList())
                 .build();
     }
 }
