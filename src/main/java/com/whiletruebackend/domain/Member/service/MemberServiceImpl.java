@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService {
         String databaseUrl = notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl();
         String databaseId = parseDatabaseId(databaseUrl);
 
-        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.retrieveDatabase(member.getNotionApiKey(), databaseId);
+        RetrieveDatabaseResponseDto retrieveDatabaseResponseDto = notionService.checkDatabase(member.getNotionApiKey(), databaseId);
 
         checkDatabaseColumn(retrieveDatabaseResponseDto);
 

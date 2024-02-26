@@ -37,3 +37,6 @@ spring:
         show_sql: true
       logging.level:
         org.hibernate.SQL: debug
+
+  notion-api-server:
+    target-url: http://localhost:3000

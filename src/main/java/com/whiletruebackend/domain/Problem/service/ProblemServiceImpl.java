@@ -4,7 +4,6 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Problem.dto.request.ProblemRequestDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemExistenceResponseDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemListResponseDto;
-import com.whiletruebackend.domain.Problem.vo.Problem;
 import com.whiletruebackend.global.error.exception.MemberDatabaseIdNotFoundException;
 import com.whiletruebackend.global.notion.service.NotionService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class ProblemServiceImpl implements ProblemService {
         String databaseId = member.getNotionSpace().getDatabaseId();
         isDatabaseIdExists(databaseId);
 
-        List<Problem> problemList = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
+        List<ProbemPage> problemList = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
         return ProblemListResponseDto.from(problemList);
     }
 

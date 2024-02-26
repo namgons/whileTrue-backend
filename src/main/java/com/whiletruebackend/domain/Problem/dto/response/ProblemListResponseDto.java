@@ -1,6 +1,6 @@
 package com.whiletruebackend.domain.Problem.dto.response;
 
-import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.domain.Problem.vo.ProbemPage;
 import lombok.*;
 
 import java.util.List;
@@ -12,9 +12,9 @@ import java.util.List;
 public class ProblemListResponseDto {
 
     private int totalCount;
-    private List<Problem> problemList;
+    private List<ProbemPage> problemList;
 
-    public static ProblemListResponseDto from(List<Problem> problemList) {
+    public static ProblemListResponseDto from(List<ProbemPage> problemList) {
         return ProblemListResponseDto.builder()
                 .totalCount(problemList.size())
                 .problemList(problemList)

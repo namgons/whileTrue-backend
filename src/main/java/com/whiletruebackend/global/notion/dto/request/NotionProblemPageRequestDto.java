@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ProblemPageRequestDto {
+public class NotionProblemPageRequestDto {
 
     private String notionApiKey;
     private String databaseId;

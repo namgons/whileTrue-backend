@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DefaultDatabaseRequestDto {
+public class NotionDatabaseRequestDto {
 
     private String notionApiKey;
     private String databaseId;
