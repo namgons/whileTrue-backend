@@ -22,7 +22,7 @@ public class NotionServiceImpl implements NotionService {
 
     @Override
     public NotionTokenResponseDto requestNotionToken(String accessCode) {
-        String url = config.getNotionApiServerUrl() + "/notion/token?code=" + accessCode;
+        String url = config.getNotionApiServerUrl() + "/notion/token/" + accessCode;
         return restTemplate.exchange(url, HttpMethod.GET, null, NotionTokenResponseDto.class).getBody();
     }
 

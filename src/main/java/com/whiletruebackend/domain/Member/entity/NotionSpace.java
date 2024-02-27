@@ -20,12 +20,13 @@ public class NotionSpace {
     private Long id;
 
     private String workspaceId;
-    private IconType workspaceIconType;
-    private String workspaceIconSrc;
+    private String workspaceIcon;
     private String workspaceName;
 
     private String databaseId;
+    @Enumerated(value = EnumType.STRING)
     private IconType databaseIconType;
+    @Column(columnDefinition = "TEXT")
     private String databaseIconSrc;
     private String databaseTitle;
 
@@ -33,10 +34,9 @@ public class NotionSpace {
     private Member member;
 
     @Builder
-    public NotionSpace(String workspaceId, IconType workspaceIconType, String workspaceIconSrc, String workspaceName) {
+    public NotionSpace(String workspaceId, String workspaceIcon, String workspaceName) {
         this.workspaceId = workspaceId;
-        this.workspaceIconType = workspaceIconType;
-        this.workspaceIconSrc = workspaceIconSrc;
+        this.workspaceIcon = workspaceIcon;
         this.workspaceName = workspaceName;
     }
 
@@ -53,8 +53,7 @@ public class NotionSpace {
 
     public void updateNotionSpace(NotionTokenResponseDto notionTokenDto) {
         this.workspaceId = notionTokenDto.getWorkspaceId();
-        this.workspaceIconType = notionTokenDto.getWorkspaceIconType();
-        this.workspaceIconSrc = notionTokenDto.getWorkspaceIconSrc();
+        this.workspaceIcon = notionTokenDto.getWorkspaceIcon();
         this.workspaceName = notionTokenDto.getWorkspaceName();
     }
 }

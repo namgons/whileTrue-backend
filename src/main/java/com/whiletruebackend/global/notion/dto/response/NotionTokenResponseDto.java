@@ -2,7 +2,6 @@ package com.whiletruebackend.global.notion.dto.response;
 
 import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
-import com.whiletruebackend.domain.Problem.vo.IconType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +13,7 @@ public class NotionTokenResponseDto {
     private String notionApiKey;
     private String tokenType;
     private String workspaceName;
-    private IconType workspaceIconType;
-    private String workspaceIconSrc;
+    private String workspaceIcon;
     private String workspaceId;
     private String notionUserId;
     private String notionUserName;
@@ -33,8 +31,7 @@ public class NotionTokenResponseDto {
     public NotionSpace toNotionSpaceEntity() {
         return NotionSpace.builder()
                 .workspaceName(workspaceName)
-                .workspaceIconType(workspaceIconType)
-                .workspaceIconSrc(workspaceIconSrc)
+                .workspaceIcon(workspaceIcon)
                 .workspaceId(workspaceId)
                 .build();
     }
