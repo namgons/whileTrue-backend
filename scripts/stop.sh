@@ -3,6 +3,8 @@
 CONTAINER="app_container"
 IMAGE="app_image"
 
+NETWORK="custom-network"
+
 if docker container inspect "$CONTAINER" >/dev/null 2>&1; then
     docker network disconnect "$NETWORK" "$CONTAINER"
     echo "container exists locally"
