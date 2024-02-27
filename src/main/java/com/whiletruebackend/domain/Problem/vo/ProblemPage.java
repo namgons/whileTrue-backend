@@ -20,6 +20,7 @@ public class ProblemPage {
     public static ProblemPage fromProblem(Problem problem) {
         return ProblemPage.builder()
                 .siteType(problem.getSiteType())
+                .level(ProblemDataConverter.createLevelTier(problem.getSiteType(), problem.getLevel()))
                 .number(problem.getNumber())
                 .title(problem.getTitle())
                 .url(problem.getUrl())

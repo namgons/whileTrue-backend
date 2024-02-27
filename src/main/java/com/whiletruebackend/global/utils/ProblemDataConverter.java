@@ -34,7 +34,7 @@ public class ProblemDataConverter {
         return null;
     }
 
-    public static String createLevelTag(SiteType siteType, String inputLevel) {
+    public static String createLevelTier(SiteType siteType, String inputLevel) {
         switch (siteType) {
             case BOJ -> {
                 String[] levels = { "Unrated", "Bronze 5", "Bronze 4", "Bronze 3", "Bronze 2", "Bronze 1", "Silver 5", "Silver 4",
