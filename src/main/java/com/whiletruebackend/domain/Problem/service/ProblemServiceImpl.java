@@ -28,7 +28,7 @@ public class ProblemServiceImpl implements ProblemService {
 
         ProblemPageListResponseDto problemPageListResponseDto = notionService.getAllProblemList(member.getNotionApiKey(), databaseId);
 
-        if (!problemPageListResponseDto.getCheckValid()) {
+        if (!problemPageListResponseDto.getValidCheck()) {
             throw MemberInvalidDatabaseFormatException.EXCEPTION;
         }
         return ProblemListResponseDto.from(problemPageListResponseDto);

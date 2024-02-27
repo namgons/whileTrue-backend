@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProblemPageListResponseDto {
 
-    private Boolean checkValid;
+    private Boolean validCheck;
     private List<ProblemPage> problemPageList;
 }
