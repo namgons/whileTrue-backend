@@ -1,6 +1,7 @@
 package com.whiletruebackend.domain.Member.dto.response;
 
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
+import com.whiletruebackend.domain.Problem.vo.IconType;
 import lombok.*;
 
 @Getter
@@ -11,7 +12,7 @@ public class MemberNotionSpaceResponseDto {
 
     private String workspaceIcon;
     private String workspaceName;
-    private String databaseIconType;
+    private IconType databaseIconType;
     private String databaseIconSrc;
     private String databaseTitle;
 
@@ -19,7 +20,7 @@ public class MemberNotionSpaceResponseDto {
         return MemberNotionSpaceResponseDto.builder()
                 .workspaceIcon(notionSpace.getWorkspaceIcon())
                 .workspaceName(notionSpace.getWorkspaceName())
-                .databaseIconType(notionSpace.getDatabaseIconType().getValue())
+                .databaseIconType(notionSpace.getDatabaseIconType())
                 .databaseIconSrc(notionSpace.getDatabaseIconSrc())
                 .databaseTitle(notionSpace.getDatabaseTitle()).build();
     }

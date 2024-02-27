@@ -38,7 +38,6 @@ public class MemberController {
     @GetMapping("/auth/token/refresh")
     public ResponseEntity<ResponseWrapper<MemberTokenResponseDto>> refreshToken(
             @CookieValue(name = "refresh-token", required = false) String refreshToken, HttpServletResponse response) {
-        System.out.println("refreshToken = " + refreshToken);
         TokenDto tokenDto = authHelper.refreshToken(refreshToken);
         Cookie cookie = authHelper.createCookie(tokenDto.getRefreshToken());
         response.addCookie(cookie);
