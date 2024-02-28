@@ -43,15 +43,15 @@ public class NotionServiceImpl implements NotionService {
     @Override
     public SuccessResponseDto insertNewProblem(String notionApiKey, String databaseId, ProblemPage problemPage) {
         String url = config.getNotionApiServerUrl() + "/notion/problem/insert";
-        HttpEntity<NotionProblemPageRequestDto> entity = new HttpEntity<>(new NotionProblemPageRequestDto(notionApiKey, databaseId,
-                                                                                                          problemPage));
+        HttpEntity<NotionProblemPageRequestDto> entity = new HttpEntity<>(NotionProblemPageRequestDto.from(notionApiKey, databaseId,
+                                                                                                           problemPage));
         return restTemplate.exchange(url, HttpMethod.POST, entity, SuccessResponseDto.class).getBody();
     }
 
     @Override
     public CheckProblemResponseDto isProblemExists(String notionApiKey, String databaseId, Problem problem) {
         String url = config.getNotionApiServerUrl() + "/notion/problem/check";
-        HttpEntity<NotionProblemRequestDto> entity = new HttpEntity<>(new NotionProblemRequestDto(notionApiKey, databaseId, problem));
+        HttpEntity<NotionProblemRequestDto> entity = new HttpEntity<>(NotionProblemRequestDto.from(notionApiKey, databaseId, problem));
         return restTemplate.exchange(url, HttpMethod.POST, entity, CheckProblemResponseDto.class).getBody();
     }
 }
