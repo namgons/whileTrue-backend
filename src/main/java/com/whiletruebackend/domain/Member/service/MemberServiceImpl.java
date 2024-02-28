@@ -33,12 +33,24 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public TokenDto requestAccessToken(String accessCode) {
-        NotionTokenResponseDto notionTokenResponseDto = notionService.requestNotionToken(accessCode);
-        Member member = saveNotionAccessToken(notionTokenResponseDto);
+        NotionTokenResponseDto notionTokenDto = notionService.requestNotionToken(accessCode);
+
+        Member member = memberRepository.findByUserId(notionTokenDto.getNotionUserId());
+
+        if (member != null) {
+            member.updateMember(notionTokenDto);
+            member.getNotionSpace().updateNotionSpace(notionTokenDto);
+        } else {
+            member = notionTokenDto.toMemberEntity();
+            member.updateNotionSpace(notionTokenDto.toNotionSpaceEntity());
+        }
+
+        Member savedMember = memberRepository.save(member);
+        notionSpaceRepository.save(member.getNotionSpace());
 
         return new TokenDto(
-                authHelper.createAccessToken(member),
-                authHelper.createRefreshToken(member)
+                authHelper.createAccessToken(savedMember),
+                authHelper.createRefreshToken(savedMember)
         );
     }
 
@@ -46,8 +58,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member,
                                                                NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto) {
-        String databaseUrl = notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl();
-        String databaseId = parseDatabaseId(databaseUrl);
+        String databaseId = parseDatabaseId(notionDatabaseIdUpdateRequestDto.getNotionDatabaseUrl());
 
         CheckDatabaseResponseDto databaseResponseDto = notionService.checkDatabase(member.getNotionApiKey(), databaseId);
 
@@ -65,22 +76,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberNotionSpaceResponseDto getMemberNotionSpace(Member member) {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
-    }
-
-    private Member saveNotionAccessToken(NotionTokenResponseDto notionTokenDto) {
-        Member member = memberRepository.findByUserId(notionTokenDto.getNotionUserId());
-
-        if (member != null) {
-            member.updateMember(notionTokenDto);
-            member.getNotionSpace().updateNotionSpace(notionTokenDto);
-        } else {
-            member = notionTokenDto.toMemberEntity();
-            member.updateNotionSpace(notionTokenDto.toNotionSpaceEntity());
-        }
-
-        Member savedMember = memberRepository.save(member);
-        notionSpaceRepository.save(member.getNotionSpace());
-        return savedMember;
     }
 
     private String parseDatabaseId(String databaseUrl) {
