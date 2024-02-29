@@ -13,4 +13,13 @@ public class Problem {
     private String number;
     private String title;
     private String url;
+
+    public static Problem fromProblemPage(ProblemPage problemPage) {
+        return Problem.builder()
+                .siteType(problemPage.getSiteType())
+                .level(problemPage.getLevel())
+                .number(problemPage.getNumber())
+                .title(problemPage.getTitle())
+                .url(problemPage.getUrl()).build();
+    }
 }
