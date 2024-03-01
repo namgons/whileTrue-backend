@@ -44,14 +44,14 @@ public class AuthHelper {
         return refreshToken;
     }
 
-    private String createToken(String memberId, String secretKey, Long expiredMs) {
+    private String createToken(String memberId, String secretKey, Long expirySecond) {
         try {
             SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
             return Jwts.builder()
                     .claim("member_id", memberId)
                     .issuedAt(new Date(System.currentTimeMillis()))
-                    .expiration(new Date(System.currentTimeMillis() + expiredMs))
+                    .expiration(new Date(System.currentTimeMillis() + expirySecond * 1000))
                     .signWith(key)
                     .compact();
         } catch (Exception e) {
