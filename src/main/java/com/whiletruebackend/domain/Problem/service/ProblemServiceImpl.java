@@ -4,7 +4,6 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Problem.dto.request.ProblemRequestDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemExistenceResponseDto;
 import com.whiletruebackend.domain.Problem.dto.response.ProblemListResponseDto;
-import com.whiletruebackend.domain.Problem.vo.ProblemPage;
 import com.whiletruebackend.global.error.exception.MemberDatabaseIdNotFoundException;
 import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseFormatException;
 import com.whiletruebackend.global.notion.dto.response.CheckProblemResponseDto;
@@ -40,7 +39,7 @@ public class ProblemServiceImpl implements ProblemService {
         isDatabaseIdExists(databaseId);
 
         CheckProblemResponseDto checkProblemResponseDto = notionService.isProblemExists(member.getNotionApiKey(), databaseId,
-                                                                                        problemRequestDto.getProblem());
+                                                                                        problemRequestDto.getProblemPage());
 
         if (!checkProblemResponseDto.getValidCheck()) {
             throw MemberInvalidDatabaseFormatException.EXCEPTION;
@@ -54,7 +53,7 @@ public class ProblemServiceImpl implements ProblemService {
         isDatabaseIdExists(databaseId);
 
         SuccessResponseDto successResponseDto = notionService.insertNewProblem(member.getNotionApiKey(), databaseId,
-                                                                               ProblemPage.fromProblem(problemRequestDto.getProblem()));
+                                                                               problemRequestDto.getProblemPage());
 
         if (!successResponseDto.getIsSucceed()) {
             throw MemberInvalidDatabaseFormatException.EXCEPTION;

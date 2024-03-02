@@ -1,6 +1,5 @@
 package com.whiletruebackend.global.notion.service;
 
-import com.whiletruebackend.domain.Problem.vo.Problem;
 import com.whiletruebackend.domain.Problem.vo.ProblemPage;
 import com.whiletruebackend.global.notion.dto.response.*;
 
@@ -14,6 +13,6 @@ public interface NotionService {
 
     SuccessResponseDto insertNewProblem(String notionApiKey, String databaseId, ProblemPage problemPage);
 
-    CheckProblemResponseDto isProblemExists(String notionApiKey, String databaseId, Problem problem);
+    CheckProblemResponseDto isProblemExists(String notionApiKey, String databaseId, ProblemPage problemPage);
 
 }

@@ -1,6 +1,6 @@
 package com.whiletruebackend.global.notion.dto.request;
 
-import com.whiletruebackend.domain.Problem.vo.Problem;
+import com.whiletruebackend.domain.Problem.vo.ProblemPage;
 import lombok.*;
 
 @Getter
@@ -12,13 +12,13 @@ public class NotionProblemRequestDto {
     private String databaseId;
     private NotionProblem problem;
 
-    public static NotionProblemRequestDto from(String notionApiKey, String databaseId, Problem problem) {
+    public static NotionProblemRequestDto from(String notionApiKey, String databaseId, ProblemPage problemPage) {
         return new NotionProblemRequestDto(notionApiKey, databaseId, NotionProblem.builder()
-                .siteType(problem.getSiteType().getName())
-                .level(problem.getLevel())
-                .number(problem.getNumber())
-                .title(problem.getTitle())
-                .url(problem.getUrl()).build());
+                .siteType(problemPage.getSiteType().getName())
+                .level(problemPage.getLevel())
+                .number(problemPage.getNumber())
+                .title(problemPage.getTitle())
+                .url(problemPage.getUrl()).build());
     }
 
     @Getter

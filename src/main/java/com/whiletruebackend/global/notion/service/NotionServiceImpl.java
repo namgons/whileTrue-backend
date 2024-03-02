@@ -1,6 +1,5 @@
 package com.whiletruebackend.global.notion.service;
 
-import com.whiletruebackend.domain.Problem.vo.Problem;
 import com.whiletruebackend.domain.Problem.vo.ProblemPage;
 import com.whiletruebackend.global.config.ConnectionConfig;
 import com.whiletruebackend.global.notion.dto.request.NotionDatabaseRequestDto;
@@ -49,9 +48,9 @@ public class NotionServiceImpl implements NotionService {
     }
 
     @Override
-    public CheckProblemResponseDto isProblemExists(String notionApiKey, String databaseId, Problem problem) {
+    public CheckProblemResponseDto isProblemExists(String notionApiKey, String databaseId, ProblemPage problemPage) {
         String url = config.getNotionApiServerUrl() + "/notion/problem/check";
-        HttpEntity<NotionProblemRequestDto> entity = new HttpEntity<>(NotionProblemRequestDto.from(notionApiKey, databaseId, problem));
+        HttpEntity<NotionProblemRequestDto> entity = new HttpEntity<>(NotionProblemRequestDto.from(notionApiKey, databaseId, problemPage));
         return restTemplate.exchange(url, HttpMethod.POST, entity, CheckProblemResponseDto.class).getBody();
     }
 }
