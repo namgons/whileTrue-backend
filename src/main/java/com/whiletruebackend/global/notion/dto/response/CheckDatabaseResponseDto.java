@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CheckDatabaseResponseDto {
 
-    private Boolean validCheck;
+    private String validCheck;
     private String databaseId;
     private IconType databaseIconType;
     private String databaseIconSrc;

@@ -25,6 +25,7 @@ public enum GlobalErrorCode implements BaseErrorCode {
     MEMBER_INVALID_DATABASE_FORMAT(BAD_REQUEST, "MEMBER-400-2", "사용자의 데이터베이스 포맷이 적절하지 않습니다."),
     MEMBER_NOT_FOUND(NOT_FOUND, "MEMBER-404-1", "주어진 ID에 해당하는 Member가 없습니다."),
     MEMBER_DATABASE_ID_NOT_FOUND(NOT_FOUND, "MEMBER-404-2", "해당 Member의 Database ID가 없습니다."),
+    MEMBER_DATABASE_NOT_FOUND(NOT_FOUND, "MEMBER-404-3", "해당 ID의 데이터베이스를 찾을 수 없습니다"),
 
     /* Auth */
 

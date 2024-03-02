@@ -7,6 +7,7 @@ import com.whiletruebackend.domain.Member.entity.Member;
 import com.whiletruebackend.domain.Member.entity.NotionSpace;
 import com.whiletruebackend.domain.Member.repository.MemberRepository;
 import com.whiletruebackend.domain.Member.repository.NotionSpaceRepository;
+import com.whiletruebackend.global.error.exception.MemberDatabaseNotFoundException;
 import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseFormatException;
 import com.whiletruebackend.global.error.exception.MemberInvalidDatabaseUrlException;
 import com.whiletruebackend.global.notion.dto.response.CheckDatabaseResponseDto;
@@ -62,8 +63,10 @@ public class MemberServiceImpl implements MemberService {
 
         CheckDatabaseResponseDto databaseResponseDto = notionService.checkDatabase(member.getNotionApiKey(), databaseId);
 
-        if (!databaseResponseDto.getValidCheck()) {
+        if (databaseResponseDto.getValidCheck().equals("INVALID")) {
             throw MemberInvalidDatabaseFormatException.EXCEPTION;
+        } else if (databaseResponseDto.getValidCheck().equals("NOT_FOUND")) {
+            throw MemberDatabaseNotFoundException.EXCEPTION;
         }
 
         NotionSpace notionSpace = member.getNotionSpace();
