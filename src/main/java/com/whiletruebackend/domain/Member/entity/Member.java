@@ -15,7 +15,7 @@ public class Member {
 
     @Id
     @UuidGenerator
-    @Column(name = "member_id")
+    @Column(name = "member_id", columnDefinition = "CHAR(36)")
     private String id;
 
     private String userId;
