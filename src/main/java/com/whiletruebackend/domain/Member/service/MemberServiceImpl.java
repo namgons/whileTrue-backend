@@ -81,6 +81,14 @@ public class MemberServiceImpl implements MemberService {
         return MemberNotionSpaceResponseDto.from(member.getNotionSpace());
     }
 
+    @Override
+    @Transactional
+    public void deleteMember(Member member) {
+        NotionSpace notionSpace = member.getNotionSpace();
+        memberRepository.delete(member);
+        notionSpaceRepository.delete(notionSpace);
+    }
+
     private String parseDatabaseId(String databaseUrl) {
         String pattern = "https:\\/\\/www\\.notion\\.so\\/(.+?)\\/(.+?)\\?v=(.+)";
         Matcher m = Pattern.compile(pattern).matcher(databaseUrl);

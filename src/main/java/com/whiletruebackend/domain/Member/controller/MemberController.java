@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,5 +59,15 @@ public class MemberController {
         MemberNotionSpaceResponseDto memberNotionSpaceResponseDto =
                 memberService.saveNotionDatabaseInfo(member, notionDatabaseIdUpdateRequestDto);
         return JsonResponse.ok("데이터베이스 정보를 저장했습니다. 사용자의 워크스페이스와 데이터베이스 정보를 가져왔습니다.", memberNotionSpaceResponseDto);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseWrapper<Nullable>> deleteMember(
+            @CookieValue(name = "refresh-token", required = false) String refreshToken,
+            @AuthenticationPrincipal Member member, HttpServletResponse response) {
+        memberService.deleteMember(member);
+        Cookie cookie = authHelper.deleteCookie(refreshToken);
+        response.addCookie(cookie);
+        return JsonResponse.ok("사용자를 삭제했습니다.");
     }
 }

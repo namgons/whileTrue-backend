@@ -12,4 +12,6 @@ public interface MemberService {
     MemberNotionSpaceResponseDto saveNotionDatabaseInfo(Member member, NotionDatabaseIdUpdateRequestDto notionDatabaseIdUpdateRequestDto);
 
     MemberNotionSpaceResponseDto getMemberNotionSpace(Member member);
+
+    void deleteMember(Member member);
 }

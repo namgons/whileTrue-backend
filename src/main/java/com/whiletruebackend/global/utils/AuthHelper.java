@@ -108,6 +108,14 @@ public class AuthHelper {
         return cookie;
     }
 
+    public Cookie deleteCookie(String refreshToken) {
+        Cookie cookie = new Cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        return cookie;
+    }
+
     @Transactional
     public TokenDto refreshToken(String refreshToken) {
         if (refreshToken == null) {
