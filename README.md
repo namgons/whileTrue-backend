@@ -3,8 +3,10 @@
     <h1>whileTrue</h1>
 </div>
 
+<p>
 <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/namgons/whiletrue-backend/aws-codedeploy.yml">
  <img src="https://img.shields.io/badge/Java-v18-007396?style=round-square"/> <img src="https://img.shields.io/badge/SpringBoot-v3.2.2-6DB33F?style=round-square"/> <img src="https://img.shields.io/badge/MySQL-v8.0.2-4479A1?style=round-square"/>
+ </p>
 
 # whileTrue 백엔드 서버
 
