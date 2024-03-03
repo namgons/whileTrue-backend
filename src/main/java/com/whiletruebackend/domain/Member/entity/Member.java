@@ -18,6 +18,7 @@ public class Member {
     @Column(name = "member_id", columnDefinition = "CHAR(36)")
     private String id;
 
+    @Column(columnDefinition = "CHAR(36)")
     private String userId;
     private String userName;
     private String avatarUrl;

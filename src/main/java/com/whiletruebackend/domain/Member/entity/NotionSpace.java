@@ -19,10 +19,12 @@ public class NotionSpace {
     @Column(name = "notion_space_id")
     private Long id;
 
+    @Column(columnDefinition = "CHAR(36)")
     private String workspaceId;
     private String workspaceIcon;
     private String workspaceName;
 
+    @Column(columnDefinition = "CHAR(36)")
     private String databaseId;
     @Enumerated(value = EnumType.STRING)
     private IconType databaseIconType;
