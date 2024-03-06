@@ -90,14 +90,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private String parseDatabaseId(String databaseUrl) {
-        String pattern = "https:\\/\\/www\\.notion\\.so\\/(.+?)\\/(.+?)\\?v=(.+)";
+        String pattern = "https:\\/\\/www\\.notion\\.so(\\/(.+?))?\\/(.+?)\\?v=(.+)";
         Matcher m = Pattern.compile(pattern).matcher(databaseUrl);
 
         if (!m.matches()) {
             throw MemberInvalidDatabaseUrlException.EXCEPTION;
         }
 
-        String databaseId = m.group(2);
+        String databaseId = m.group(3);
         if (databaseId.length() != 32) {
             throw MemberInvalidDatabaseUrlException.EXCEPTION;
         }
