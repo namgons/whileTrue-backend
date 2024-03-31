@@ -1,5 +1,7 @@
 server:
   port: 80
+  tomcat:
+    keep-alive-timeout: 70000
 
 spring:
   profiles:
